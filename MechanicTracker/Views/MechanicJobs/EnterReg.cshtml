@@ -1,0 +1,29 @@
+@{
+    Layout = "~/Views/Shared/_Layout_Mobile.cshtml";
+}
+
+﻿<div class="container" id="MechMobile" style="margin-top: 10px;">
+<h3 class="text-center">Search Reg</h3>
+    @using (Html.BeginForm("SearchDisplay", "MechanicJobs"))
+    {
+        <div class="col-xs-12">
+            <div class="center-block">
+                @Html.TextBox("carReg",null, new { placeholder = "Enter Registration" })
+            </div>
+            
+        </div>
+        <div class="col-xs-12" style="margin-top: 20px;">
+            <input type="submit" value="Search Reg" class="btn btn-danger" style="width: 100%;" />
+        </div>
+    
+   
+    }
+    <div class="col-xs-12" style="margin-top: 20px;">
+        @Html.ActionLink("Back to Home", "index",
+    null, new { @class = "btn btn-danger", @style = "width:100%;" })
+    </div>
+
+
+</div>
+
+

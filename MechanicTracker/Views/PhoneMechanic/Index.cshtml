@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+    <div class="col-xs-12">
+        Reg:<input type="text" placeholder="Enter Reg" data-bind="value: search"  />
+    </div>
+    <div class="col-xs-12" style="margin-top:10px;">
+        <button style="height:35px; width:100%;" class="btn btn-danger" data-bind="click: function () { GJobs(search) }" >Get Jobs for car</button>
+    </div>
+</div>
+
+<div id="MechMobile" style="margin-top:10px;">
+
+
+
+<table class="table table-bordered">
+    
+  <tr>
+    <th>Job Name</th>
+    <th>Job Description</th>
+    <th>Choose Job</th>
+  </tr>
+    <tbody data-bind="foreach: { data: Jobs }">
+  <tr>
+    <td data-bind="text: jobslist.Name"></td>
+    <td data-bind="text: jobslist.Description"></td>
+    <td> <a href="@Url.Action("MenuMobile","PhoneMechanic")" class="btn btn-danger" data-bind="click: function () { $parent.GetMenu(JobID); }">Select Job</a></td>
+  </tr>
+</table>
+  
+    </div>
+@Scripts.Render("~/bundles/Knockout")
+
+
+
+@*<script>
+var ViewModel = function () {
+        var self = this;
+        self.Jobs = ko.observableArray();
+        self.search = ko.observable();
+        self.job = ko.observableArray();
+        self.GJobs = function (search) {
+            GetJobs(self.search);
+        }
+        self.GetMenu = function (JobID) {
+            GetMenu(JobID);
+        }
+
+        function GetMenuPhone() {
+            $.ajax({
+                type: "GET",
+                url: 'MechanicDetails',
+                success: function (data) {
+                    $('#MechMobile').html(data);
+                    $('#MechMobile').fadeIn("slow");
+                },
+                error: function (data) {
+                    $('#MechMobile').html('<h3>Error in dsssretrieval</h3>');
+                }
+            });
+        }
+
+        function GetJobs(search) {
+            $.ajax({
+                type: "GET",
+                url: 'api/mechanicphone/',
+                data: { reg: search },
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    self.Jobs(data);
+
+                    
+                },
+                error: function (data) {
+                    $('#MechMobile').html('<h3>Error in retrieval</h3>');
+                }
+            });
+        }
+
+        
+            function GetMenu(JobId) {
+            $.ajax({
+                type: "GET",
+                url: 'api/mechanicphone/Details',
+                data: { id: JobId },
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    self.job(data);
+                    GetMenuPhone();
+
+                },
+                error: function (data) {
+                    $('#MechMobile').html('<h3>Error in dsssretrieval</h3>');
+                }
+            });
+        }}
+
+      
+ko.applyBindings(new ViewModel());
+</script>*@

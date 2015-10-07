@@ -1,0 +1,123 @@
+﻿<!DOCTYPE >
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="shortcut icon" href="~/Content/themes/base/images/MT-Logo.ico" type="image/x-icon">
+    <link rel="icon" href="~/Content/themes/base/images/MT-Logo.ico" type="image/x-icon">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("Index", "Home")">
+                    <img src="@Url.Content("~/Content/themes/base/images/MT-Logo.png")" style="width: 220px; height: 50px; padding:5px;" /></a>
+                @*                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Mechanic-Trackor</a>*@
+            </div>
+
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+                        @if (Request.IsAuthenticated)
+                        {
+                            @User.Identity.Name 
+                        }
+                        else
+                        {
+                            <p></p>
+                        }
+
+                        <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                            @Html.AntiForgeryToken()
+                            <a style="margin-left:50%;" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                            }</li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        @Html.ActionLink(" Dashboard", "Index", "Home", null, new { @class = "fa fa-tachometer" })
+                    </li>
+                    <li>
+                        @Html.ActionLink(" Bookings", "Index", "Booking", null, new { @class = "fa fa-book" })
+                    </li>
+
+                    <li>
+                        @Html.ActionLink(" Jobs", "", "Jobs", null, new { @class = "fa fa-wrench" })
+                    </li>
+                    <li>
+                        @Html.ActionLink(" Manage Mechanics", "Mechanics", "Mechanic", null, new { @class = "fa fa-group" })
+                    </li>
+                    <li class="dropdown" id="reports">
+                        <a href="#" class="dropdown-toggle fa fa-folder-open" data-toggle="dropdown">Reports</a>
+                        <ul id="stats" class="dropdown-menu alert-dropdown">
+                            <li>@Html.ActionLink(" Over Time Ratio", "Rankings", "Report", null, new { @class = "fa fa-pie-chart" })</li>
+                            <li>@Html.ActionLink(" Mechanic Stats", "MechanicStats", "Report", null, new { @class = "fa fa-line-chart" })</li>
+                            <li>@Html.ActionLink(" Mechanic Jobs", "MechanicJobs", "Report", null, new { @class = "fa fa-area-chart" })</li>
+                            <li>@Html.ActionLink(" Category Stats", "JobCategoryStats", "Report", null, new { @class = "fa fa-bar-chart" })</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        
+            <div id="RenderBody" class="col-md-12">
+                <div class=" col-md-offset-2 col-md-10">
+                @RenderBody()
+                </div>
+                <!-- Insert View/Partial Here-->
+            </div>
+            <!-- /.container-fluid -->
+        
+        <!-- /#page-wrapper -->
+
+
+    </div>
+    <!-- /#wrapper -->
+
+    @Scripts.Render("~/bundles/jquery")
+    @{
+        string currentAction = ViewContext.RouteData.Values["action"].ToString();
+        string currentController = ViewContext.RouteData.Values["controller"].ToString();
+    }
+    @if (currentController == "Report" && (currentAction == "MechanicStats" || currentAction == "JobCategoryStats" || currentAction == "Rankings"))
+    {
+        @Scripts.Render("~/bundles/HighChart");
+    }
+    @if (currentController == "Home" && currentAction == "Index")
+    {
+        @Scripts.Render("~/bundles/Tabs")
+    }
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $("#reports").hover(function () {
+                $("#stats").slideDown(500).add(".open");
+            }, function () {
+                $("#stats").slideUp(500).add(".closed").clearQueue();
+            });
+        });
+    </script>
+</body>
+</html>

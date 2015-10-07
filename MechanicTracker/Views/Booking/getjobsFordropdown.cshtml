@@ -1,0 +1,15 @@
+﻿@using MechanicTracker
+@{
+    ViewBag.Title = "getjobsFordropdown";
+}
+
+<h2>getjobsFordropdown</h2>
+@using MechanicTracker
+<select name="JobsListID">
+            <option>Select</option>
+            @foreach (jobslist jl in @ViewBag.joblist)
+            {
+               <option value="@jl.JobsListID">@jl.Name</option>
+               
+            }
+        </select>

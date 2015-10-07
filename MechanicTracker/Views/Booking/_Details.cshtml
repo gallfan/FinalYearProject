@@ -1,0 +1,46 @@
+﻿@model MechanicTracker.booking
+@if (@Model != null)
+{
+<fieldset>
+    <legend>Booking Details</legend>
+    <div class="form-group">
+    <label class="col-sm-5 control-label forms" style="margin-top:4px;">@Html.DisplayNameFor(model => model.car.Registration):</label>
+        <div class="col-sm-3 input-container">
+            @Html.DisplayFor(model => model.car.Registration)
+        </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-5 control-label forms">Description</label>
+        <div class="col-sm-5 input-container">
+           @Html.DisplayFor(model => model.Description, "_HandleStringNull")
+            
+        </div>
+    </div>
+    
+    <div class="form-group">
+    <label class="col-md-12 control-label forms"> Jobs Complete: (@ViewBag.completejobs out of @ViewBag.count)</label>
+    </div>
+       
+    
+    
+   <div class="form-group">
+        <div class="col-sm-12 forms">
+            <span class = "btn btn-danger btn-xs" onclick="Getjobs(@Model.BookingID)">Display Jobs</span>
+            <span class = "btn btn-danger btn-xs" onclick="createjobsform(@Model.BookingID)">Create Jobs</span>
+        </div>
+    </div>
+</fieldset>
+}
+else
+{
+    <h3>There was a Error</h3>
+}
+@*<input type="text" style="height:100px; width:300px" />*@
+@*<label style="height:50px; width:300px; border:solid;border-width:1px" >@Model.Description</label><br />*@
+@*<span class = "btn btn-default" onclick="Getjobs(@Model.BookingID)">Display Jobs</span>
+ <span class = "btn btn-default" onclick="createjobsform(@Model.BookingID)">Create Jobs</span>*@
+
+
+
+

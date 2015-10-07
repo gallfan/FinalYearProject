@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Mechanic Stats";
+}
+
+<div class="row" style="margin-top: 50px;">
+    <div class="col-md-3">
+        <h3>Mechanic Stats</h3>
+    </div>
+    <div class="col-md-4" style="margin-top: 22px;">
+        <label style="margin-left: 5px;">Choose Mechanic:</label>
+        @Html.DropDownList("MechanicId", new SelectList(ViewBag.MechanicsList, "MechanicID", "FullName", ViewBag.MechanicsList[0]), new { @onchange = "MechanicDetails(this.value)"})
+    </div>
+</div>
+<hr />
+    <div id="Content">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Mechanic Details</h3>
+            <div id="Details"></div>
+        </div>
+        <div class="col-md-8">
+            <h3>Monthly Jobs</h3>
+            <div id="LineChart" style="height: 300px;"></div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-7">
+            <h3>Job Categories</h3>
+            <div id="ColumnChart" style="height: 400px;"></div>
+        </div>
+        <div class="col-md-5">
+            <h3>Job Time Status</h3>
+            <div id="PieChart" style="height: 400px;"></div>
+        </div>
+    </div><!--row-->
+</div><!--content-->
+@section scripts{
+    <script>
+        $(function () {
+            MechanicDetails($("select[name=MechanicId]").val());
+        });
+
+        function MechanicDetails(MechanicId) {
+            $("select[name=MechanicId]").addClass("disabled").attr("disabled", "disabled");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("MechanicDetails")',
+                data: { MechanicId: MechanicId },
+                success: function (data) {
+                    $("#Details").hide();
+                    $("#Details").html(data);
+                    $('.rating').rating({
+                        filled: 'glyphicon glyphicon-star',
+                        empty: 'glyphicon glyphicon-star-empty'
+                    });
+                    $("#Details").fadeIn(1000);
+                },
+                error: function () {
+                    $("#Details").hide();
+                    $("#Details").html("<p>Error retrieving Mechanic Details</p>");
+                    $("#Details").fadeIn(1000);
+                },
+                complete: function () {
+                    $.when(RetrieveJSON(MechanicId, '@Url.Action("MechanicJobsMonth")', LineChart, '#LineChart', 'Monthly Jobs', 'Number of Jobs'))
+                        .then(RetrieveJSON(MechanicId, '@Url.Action("MechanicCategoryJobs")', Column, '#ColumnChart', 'Job Categories', 'No. of Jobs'))
+                        .then(RetrieveJSON(MechanicId, '@Url.Action("MechanicTimeStats")', PieChart, '#PieChart', 'Time Taken', 'Job Times'));
+                    $("select[name=MechanicId]").removeAttr("disabled").removeClass("disabled");
+                }
+            });
+        }
+
+        function Column(data, ele, name) {
+            var Group = new Array();
+            var Ontime = new Array();
+            var Acceptable = new Array();
+            var Over = new Array();
+            var Incomplete = new Array();
+            for (var i = 0; i < data.length; i++) {
+                Group.push(data[i].Group);
+                Ontime.push(data[i].Count[0]);
+                Acceptable.push(data[i].Count[1]);
+                Over.push(data[i].Count[2]);
+                Incomplete.push(data[i].Count[3]);
+            }
+            $(ele).highcharts({
+                colors: ["rgba(33,150,243,.8)", "rgba(51,204,51,.8)", "rgba(255,153,0, .8)", "rgba(255,0,0, .8)"],
+                chart: {
+                    type: 'column',
+                    margin: 75,
+                    options3d: {
+                        enabled: true,
+                        alpha: 10,
+                        beta: 25,
+                        depth: 70
+                    }
+                },
+                title: {
+                    text: ""
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        depth: 25,
+                        events: {
+                            legendItemClick: function () {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: Group,
+                },
+                yAxis: {
+                    opposite: false,
+                    title: {
+                        text: "Number of Jobs",
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size: 14px"><b>{point.x}</b></span><br/>',
+                    pointFormat: 'Number: <b>{point.y}</b><br/>Percentage: <b>{point.percentage:.1f}%</b>',
+                },
+                series: [{
+                    name: 'Incomplete',
+                    data: Incomplete
+                }, {
+
+                    name: 'On Time',
+                    data: Ontime
+                }, {
+
+                    name: 'Acceptable Time',
+                    data: Acceptable
+                }, {
+
+                    name: 'Over Time',
+                    data: Over
+                }]
+            });
+        }
+    </script>
+}
+

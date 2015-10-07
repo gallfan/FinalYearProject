@@ -1,0 +1,82 @@
+﻿@model MechanicTracker.job
+
+
+@if (Model != null)
+{
+    <h4>Car Details</h4>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.booking.car.Registration)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.booking.car.Registration)
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">Car</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.booking.car.model.make.MakeName, "_Capitalize") @Html.DisplayFor(model => model.booking.car.model.ModelName, "_Capitalize")
+        </div>
+    </div>
+    <h4>Job Details</h4>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.jobslist.jobscategory.Type)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.jobslist.jobscategory.Type, "_Capitalize")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.jobslist.Name)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.jobslist.Name, "_Capitalize")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Difficulty)</label>
+        <div class="col-sm-7">
+            <input type="hidden" id="jobdifficulty" class="rating" readonly="readonly" value="@Model.Difficulty"/>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.jobslist.Description)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.jobslist.Description, "_Capitalize")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.TimeAllowed)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.TimeAllowed, "_Time")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Notes)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.Notes, "_HandleStringNull")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.CompleteDate)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.CompleteDate)
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.TimeTaken)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.TimeTaken, "_Time")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Comments)</label>
+        <div class="col-sm-7">
+            @Html.DisplayFor(model => model.Comments, "_HandleStringNull")
+        </div>
+    </div>
+    
+    <button onclick="MechanicDetails($('select[name=MechanicId]').val(), 'All');" style="margin-top:20px;" class="btn btn-danger btn-xs">Back to Mechanic Details</button>
+}
+else
+{
+    <div>
+        <strong><mark>A problem has occured when loading the Job Details.</mark></strong>
+    </div>
+}

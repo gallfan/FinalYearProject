@@ -1,0 +1,10 @@
+﻿
+@using MechanicTracker
+Jobs<select style="width:100px" name="JobsListID" >
+            <option>Select</option>
+            @foreach (jobslist jl in @ViewBag.joblist)
+            {
+               <option value="@jl.JobsListID">@jl.Name</option>
+               
+            }
+        </select>

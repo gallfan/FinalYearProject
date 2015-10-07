@@ -1,0 +1,47 @@
+﻿@using MechanicTracker
+@model PagedList.IPagedList<job>
+@using PagedList.Mvc
+
+@if (Model.Any() && Model != null)
+{
+    <table class="table table-bordered" style="margin-top: 20px;">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().booking.car.Registration)</th>
+            <th>@Html.DisplayNameFor(model => model.First().jobslist.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().jobslist.jobscategory.Type)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CompleteDate)</th>
+        </tr>
+        @foreach (job jb in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(item => jb.booking.car.Registration)</td>
+                <td>@Html.DisplayFor(item => jb.jobslist.Name, "_Capitalize")</td>
+                <td>@Html.DisplayFor(item => jb.jobslist.jobscategory.Type, "_Capitalize")</td>
+                <td>@Html.DisplayFor(item => jb.CompleteDate)</td>
+                <td>@Html.DisplayFor(item => jb, "_CompleteJobStatus")</td>
+                <td>
+                    <button onclick="JobDetails(@jb.JobID)" class="btn btn-danger btn-xs">Details</button></td>
+            </tr>
+        }
+    </table>
+    <div class="text-center"><span class="glyphicon glyphicon-ok" style="color: green;"></span>-On Time / <span class="glyphicon glyphicon-exclamation-sign" style="color: #FF9900;"></span>- Acceptable Time / <span class="glyphicon glyphicon-remove" style="color: red;"></span>- Over Time</div>
+
+    @Html.PagedListPager(Model, page => Url.Action("CurrentJobs", new { page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            },
+            new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "CompleteJobs" }))
+}
+else
+{
+    <p>No jobs match this filter.</p>
+}

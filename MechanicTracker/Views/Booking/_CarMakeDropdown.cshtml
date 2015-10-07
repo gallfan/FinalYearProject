@@ -1,0 +1,8 @@
+﻿@using MechanicTracker.Models;
+<select style="width:100px" >
+            <option>Select</option>
+            @foreach (MechanicTracker.model cm in @ViewBag.models)
+            {
+               <option value="@cm.ModelID">@cm.ModelName</option>
+            }
+        </select>

@@ -1,0 +1,33 @@
+﻿@model MechanicTracker.Models.NotFoundModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Page Not Found</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+
+    <div class="container" id="errorpage" style="margin-top:10%;">
+    <div class="col-md-12">
+        <img class="center-block"  src="~/Content/themes/base/images/MT-Logo.PNG" style="width: 50%; height: 100px; margin-left:25%;" />
+    </div>
+    <div class="col-md-12" style="color:#ddd">
+        <h1 class="text-center"> Error: 404 Page Not Found</h1>
+        
+            <p class="text-center">- Make sure the page address in the address bar is correct.</p>
+            <p class="text-center">- Click the back button and try another link.</p>
+            <p class="text-center">- Go to the home page and look for the page you want to find.</p>
+        
+        
+           <p class="text-center"> @Html.ActionLink("Redirect to Homepage", "Index", "Home", null, new { @class = "btn btn-danger" })</p>
+        
+        
+    </div>
+</div>
+</body>
+</html>

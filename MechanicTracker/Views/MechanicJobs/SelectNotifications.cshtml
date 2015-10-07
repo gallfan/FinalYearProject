@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "SelectNotifications";
+    Layout = "~/Views/Shared/_Layout_Mobile.cshtml";
+}
+
+<div class="col-xs-12">
+    <h3 class="text-center">Select Notifications</h3>
+</div>
+
+<div class="col-xs-12" style="margin-top:10%;">
+    <a href="/MechanicJobs/Notifications?read=False" class="btn btn-xs btn-danger" style="width: 100%; height: 35px;">
+        <h5>New Notifications (@ViewBag.Count)</h5>
+    </a>
+</div>
+<div class="col-xs-12"style="margin-top:10%;">
+    <a href="/MechanicJobs/Notifications?read=True" class="btn btn-xs btn-danger" style="width: 100%; height: 35px;">
+        <h5>Old Notifications</h5> 
+    </a>
+</div>
+
+
+<div class="col-xs-12" style="margin-top:10%;">
+
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-danger", @style = "width:100%" })
+</div>
+
+
+
+
+

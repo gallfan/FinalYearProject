@@ -1,0 +1,70 @@
+@model  IEnumerable<MechanicTracker.job>
+
+@{
+    Layout = "~/Views/Shared/_Layout_Mobile.cshtml";
+}
+
+<h3 class="text-center" style="margin-top:-20px;">Jobs</h3>
+<div class="col-xs-12">
+    
+</div>
+    <div>
+
+        <div id="summaryDisplay">
+            
+            @if(Model != null && Model.Any())
+            {
+            foreach (var item in Model)
+            {
+                <div style="border-radius: 5px; border-style: solid; border-width: 2px; margin-top:2%;">
+
+                    <p class="text-center"><b>Job Name:</b> @item.jobslist.Name</p>
+                    
+                    <p class="text-center"><b>Job Description:</b>@item.jobslist.Description</p>
+                    
+                    <div class="col-md-4 text-center" style="margin-bottom:10px;">
+                    @Html.ActionLink("Select Job", "JobMenu",
+                    new { id = item.JobID }, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            }
+            }
+            else
+            {
+                <h3>No jobs for this Car registration</h3>
+            }
+        </div>
+    </div>
+<div class="col-xs-12" style="margin-top:5%;">
+    @Html.ActionLink("Back to Home", "Index",
+    null, new { @class = "btn btn-danger", @style = "width:100%"  })
+</div>
+<div class="col-xs-12" style="margin-top:5%;">
+    @Html.ActionLink("Back to Search", "EnterReg",
+    null, new { @class = "btn btn-danger", @style = "width:100%"  })
+</div>
+                
+@*<div class="col-xs-12">
+    <h3 class="text-center">Notifications</h3>
+    <div style="overflow: scroll hidden;">
+        <div id="notsifications" >
+            @foreach (var item in Model)
+            {
+                <div style="border-radius: 5px; border-style: solid; border-width: 2px; margin-top:2%;">
+                    <p class="text-center"><b>@item.Message</b></p>
+                    <div class="col-md-4 text-center">
+                         <a href="/MechanicJobs/DisplayJobs?id=@item.JobID" onclick="setNotification(@item.NotificationID)" class="btn btn-xs btn-danger"  style="height:20px 20px; margin:10px ">Get Jobs</a>
+                    </div>
+                    
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="col-xs-12" style="margin-top: 10%; width: 100%;">
+    @Html.ActionLink("Back", "SelectNotifications", null, new { @class = "btn btn-danger", @style = "width:100%" })
+</div>*@
+
+
+
+

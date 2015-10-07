@@ -1,0 +1,73 @@
+﻿@model PagedList.IPagedList<MechanicTracker.mechanic>
+@using PagedList.Mvc
+@using MechanicTracker.Models;
+
+<div style="margin-top: 30px;">
+
+    <!--<select id="dropDownMechanics" onchange="allMechanics(@ViewBag.JobId', value)">
+            <option>Check</option>
+            <option value='allMechanics'>All Mechanics</option>
+            <option value='available'>Available</option>
+        </select>-->
+
+    <div class="panel-body">
+
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-border col-sm-6">
+                <tr>
+                    <th>Mechanic
+                    </th>
+
+                    <th>Skill Level
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <!--, '@ViewBag.CarReg', '@item.Firstname')">-->
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Firstname, "_Capitalize")
+
+                            @Html.DisplayFor(modelItem => item.LastName, "_Capitalize")
+                        </td>
+                        <td>
+                            @for (int i = 0; i < item.SkillLevel; i++)
+                            {
+                                <span class="glyphicon glyphicon-star"></span>
+                            }
+
+                        </td>
+                        <td>
+                            <button onclick="ShowConfirmMechanicBtn('@item.MechanicID', '@ViewBag.JobId', '@ViewBag.Reg','@item.Firstname', '@item.LastName'); showJobTimeAllowed();"
+                                        class="btn btn-danger btn-xs">
+                                Assign<br />
+                                Job</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("DisplayAllMechanics", new { id = ViewBag.JobId, filteredMechanics = ViewBag.FilteredMechanics, page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            },
+                          new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "Details" }))
+        }
+        else
+        {
+            <div><strong><mark>There are no Mechanics to display</mark></strong></div>
+        }
+    </div>
+
+</div>

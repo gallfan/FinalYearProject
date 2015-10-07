@@ -1,0 +1,60 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-xs-offset-3 col-xs-8">
+            <h1><b>0:00</b></h1>
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+        <div class="col-xs-6">
+            <button  class="btn btn-danger" style="width:100%;height:70px;"><b>Start Job</b></button>
+        </div>
+        <div class="col-xs-6">
+            <button  class="btn btn-danger" style="width:100%;height:70px;"><b>Stop Job</b></button><br />
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px;">
+        <div class="col-xs-6">
+            <button  class="btn btn-danger" style="width:100%;height:70px;"><b>Pause Job</b></button>
+        </div>
+        <div class="col-xs-6">
+            <button  class="btn btn-danger" style="width:100%;height:70px;"><b>Complete</b></button><br />
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:20px;">
+        <div>
+             <div class="form-group">
+                <label class="col-sm-5 control-label forms">Name:</label>
+                <div class="col-sm-3 input-container">
+                    <span data-bind="text: Name"> </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-5 control-label forms">Description:</label>
+                <div class="col-sm-3 input-container">
+                    <span data-bind="text: Description"> </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!--/Container-->
+
+
+@Scripts.Render("~/bundles/Knockout")
+
+
+@*<div style="margin-top:100px; width:350px;height:400px; border-style:solid"; >
+    
+       
+ <p data-bind="with: job().jobslist">
+Name: <span data-bind="text: Name"> </span>
+Description: <span data-bind="text: Description"> </span>
+</p>
+    
+    <h1><b>0:00</b></h1>
+    <button  class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Start Job</b></button>
+    <button  class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Stop Job</b></button><br />
+    <button  class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Pause Job</b></button>
+    <button  class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Job Complete</b></button>
+   
+</div>*@

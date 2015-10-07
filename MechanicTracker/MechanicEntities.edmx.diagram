@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e210c6b1f9f84ebc9ff7ce59c8327fff" Name="Diagram1" ZoomLevel="54">
+
+        <EntityTypeShape EntityType="MTModel.booking" Width="1.5" PointX="3.125" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.car" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.job" Width="1.5" PointX="7.375" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.jobscategory" Width="1.5" PointX="5.125" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.jobslist" Width="1.5" PointX="9.375" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.make" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.mechanic" Width="1.5" PointX="15.125" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.model" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.model_jobslist" Width="1.5" PointX="11.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.notification" Width="1.5" PointX="14.125" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MTModel.timessheet" Width="1.5" PointX="12" PointY="8.125" IsExpanded="true" />
+        <AssociationConnector Association="MTModel.Booking1" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.Car1" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.CarModel" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.JobsList1" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.JobTimeSheet" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.JobsCategory1" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.JobslistModel" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.Make1" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.MessageMechanic" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.Model1" ManuallyRouted="false" />
+        <AssociationConnector Association="MTModel.Mechanic11" />
+        <AssociationConnector Association="MTModel.MessageJob" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

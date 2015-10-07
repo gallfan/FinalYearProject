@@ -1,0 +1,830 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MTModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="MTModelStoreContainer">
+          <EntitySet Name="booking" EntityType="MTModel.Store.booking" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="cars" EntityType="MTModel.Store.cars" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="jobs" EntityType="MTModel.Store.jobs" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="jobscategory" EntityType="MTModel.Store.jobscategory" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="jobslist" EntityType="MTModel.Store.jobslist" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="make" EntityType="MTModel.Store.make" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="mechanic" EntityType="MTModel.Store.mechanic" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="model" EntityType="MTModel.Store.model" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="model/jobslist" EntityType="MTModel.Store.model/jobslist" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="notification" EntityType="MTModel.Store.notification" store:Type="Tables" Schema="mechanic_tracker" />
+          <EntitySet Name="timessheet" EntityType="MTModel.Store.timessheet" store:Type="Tables" Schema="mechanic_tracker" />
+          <AssociationSet Name="Booking1" Association="MTModel.Store.Booking1">
+            <End Role="booking" EntitySet="booking" />
+            <End Role="jobs" EntitySet="jobs" />
+          </AssociationSet>
+          <AssociationSet Name="Car" Association="MTModel.Store.Car">
+            <End Role="cars" EntitySet="cars" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="CarModel" Association="MTModel.Store.CarModel">
+            <End Role="model" EntitySet="model" />
+            <End Role="cars" EntitySet="cars" />
+          </AssociationSet>
+          <AssociationSet Name="JobsCategory1" Association="MTModel.Store.JobsCategory1">
+            <End Role="jobscategory" EntitySet="jobscategory" />
+            <End Role="jobslist" EntitySet="jobslist" />
+          </AssociationSet>
+          <AssociationSet Name="JobsList1" Association="MTModel.Store.JobsList1">
+            <End Role="jobslist" EntitySet="jobslist" />
+            <End Role="jobs" EntitySet="jobs" />
+          </AssociationSet>
+          <AssociationSet Name="JobslistModel" Association="MTModel.Store.JobslistModel">
+            <End Role="jobslist" EntitySet="jobslist" />
+            <End Role="model/jobslist" EntitySet="model/jobslist" />
+          </AssociationSet>
+          <AssociationSet Name="JobTimeSheet" Association="MTModel.Store.JobTimeSheet">
+            <End Role="jobs" EntitySet="jobs" />
+            <End Role="timessheet" EntitySet="timessheet" />
+          </AssociationSet>
+          <AssociationSet Name="Make1" Association="MTModel.Store.Make1">
+            <End Role="make" EntitySet="make" />
+            <End Role="model" EntitySet="model" />
+          </AssociationSet>
+          <AssociationSet Name="Mechanic1" Association="MTModel.Store.Mechanic1">
+            <End Role="mechanic" EntitySet="mechanic" />
+            <End Role="jobs" EntitySet="jobs" />
+          </AssociationSet>
+          <AssociationSet Name="MessageJob" Association="MTModel.Store.MessageJob">
+            <End Role="jobs" EntitySet="jobs" />
+            <End Role="notification" EntitySet="notification" />
+          </AssociationSet>
+          <AssociationSet Name="MessageMechanic" Association="MTModel.Store.MessageMechanic">
+            <End Role="mechanic" EntitySet="mechanic" />
+            <End Role="notification" EntitySet="notification" />
+          </AssociationSet>
+          <AssociationSet Name="Model1" Association="MTModel.Store.Model1">
+            <End Role="model" EntitySet="model" />
+            <End Role="model/jobslist" EntitySet="model/jobslist" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="BookingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="BookingDate" Type="date" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="400" />
+          <Property Name="CompleteDate" Type="date" />
+          <Property Name="CustomerEmail" Type="varchar" MaxLength="50" />
+          <Property Name="RowVersion" Type="timestamp" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="cars">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ModelID" Type="int" Nullable="false" />
+          <Property Name="Registration" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="FuelType" Type="char" Nullable="false" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="jobs">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JobsListID" Type="smallint" Nullable="false" />
+          <Property Name="BookingID" Type="int" Nullable="false" />
+          <Property Name="MechanicID" Type="int" />
+          <Property Name="Notes" Type="varchar" MaxLength="300" />
+          <Property Name="Difficulty" Type="tinyint" Nullable="false" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="TimeStarted" Type="datetime" />
+          <Property Name="TimeAllowed" Type="smallint" />
+          <Property Name="CompleteDate" Type="datetime" />
+          <Property Name="TimeTaken" Type="smallint" />
+          <Property Name="Comments" Type="varchar" MaxLength="2000" />
+          <Property Name="RowVersion" Type="timestamp" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="jobscategory">
+          <Key>
+            <PropertyRef Name="JobsCategoryID" />
+          </Key>
+          <Property Name="JobsCategoryID" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="jobslist">
+          <Key>
+            <PropertyRef Name="JobsListID" />
+          </Key>
+          <Property Name="JobsListID" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JobCategoryID" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="make">
+          <Key>
+            <PropertyRef Name="MakeID" />
+          </Key>
+          <Property Name="MakeID" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MakeName" Type="varchar" Nullable="false" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="mechanic">
+          <Key>
+            <PropertyRef Name="MechanicID" />
+          </Key>
+          <Property Name="MechanicID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Firstname" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="LastName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="SkillLevel" Type="tinyint" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="10" />
+          <Property Name="Available" Type="bool" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="model">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MakeID" Type="smallint" Nullable="false" />
+          <Property Name="ModelName" Type="varchar" Nullable="false" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="model/jobslist">
+          <Key>
+            <PropertyRef Name="ModelID" />
+            <PropertyRef Name="JobslistID" />
+          </Key>
+          <Property Name="ModelID" Type="int" Nullable="false" />
+          <Property Name="JobslistID" Type="smallint" Nullable="false" />
+          <Property Name="ApproxTime" Type="smallint" Nullable="false" />
+          <Property Name="Difficulty" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MechanicID" Type="int" Nullable="false" />
+          <Property Name="JobID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Message" Type="varchar" Nullable="false" />
+          <Property Name="Read" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="timessheet">
+          <Key>
+            <PropertyRef Name="TimeSheetID" />
+          </Key>
+          <Property Name="TimeSheetID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JobID" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" />
+        </EntityType>
+        <Association Name="Booking1">
+          <End Role="booking" Type="MTModel.Store.booking" Multiplicity="1" />
+          <End Role="jobs" Type="MTModel.Store.jobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="booking">
+              <PropertyRef Name="BookingID" />
+            </Principal>
+            <Dependent Role="jobs">
+              <PropertyRef Name="BookingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Car">
+          <End Role="cars" Type="MTModel.Store.cars" Multiplicity="1" />
+          <End Role="booking" Type="MTModel.Store.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CarModel">
+          <End Role="model" Type="MTModel.Store.model" Multiplicity="1" />
+          <End Role="cars" Type="MTModel.Store.cars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="model">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="cars">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobsCategory1">
+          <End Role="jobscategory" Type="MTModel.Store.jobscategory" Multiplicity="1" />
+          <End Role="jobslist" Type="MTModel.Store.jobslist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobscategory">
+              <PropertyRef Name="JobsCategoryID" />
+            </Principal>
+            <Dependent Role="jobslist">
+              <PropertyRef Name="JobCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobsList1">
+          <End Role="jobslist" Type="MTModel.Store.jobslist" Multiplicity="1" />
+          <End Role="jobs" Type="MTModel.Store.jobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobslist">
+              <PropertyRef Name="JobsListID" />
+            </Principal>
+            <Dependent Role="jobs">
+              <PropertyRef Name="JobsListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobslistModel">
+          <End Role="jobslist" Type="MTModel.Store.jobslist" Multiplicity="1" />
+          <End Role="model/jobslist" Type="MTModel.Store.model/jobslist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobslist">
+              <PropertyRef Name="JobsListID" />
+            </Principal>
+            <Dependent Role="model/jobslist">
+              <PropertyRef Name="JobslistID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobTimeSheet">
+          <End Role="jobs" Type="MTModel.Store.jobs" Multiplicity="1" />
+          <End Role="timessheet" Type="MTModel.Store.timessheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobs">
+              <PropertyRef Name="JobID" />
+            </Principal>
+            <Dependent Role="timessheet">
+              <PropertyRef Name="JobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Make1">
+          <End Role="make" Type="MTModel.Store.make" Multiplicity="1" />
+          <End Role="model" Type="MTModel.Store.model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="make">
+              <PropertyRef Name="MakeID" />
+            </Principal>
+            <Dependent Role="model">
+              <PropertyRef Name="MakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Mechanic1">
+          <End Role="mechanic" Type="MTModel.Store.mechanic" Multiplicity="0..1" />
+          <End Role="jobs" Type="MTModel.Store.jobs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mechanic">
+              <PropertyRef Name="MechanicID" />
+            </Principal>
+            <Dependent Role="jobs">
+              <PropertyRef Name="MechanicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MessageJob">
+          <End Role="jobs" Type="MTModel.Store.jobs" Multiplicity="1" />
+          <End Role="notification" Type="MTModel.Store.notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobs">
+              <PropertyRef Name="JobID" />
+            </Principal>
+            <Dependent Role="notification">
+              <PropertyRef Name="JobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MessageMechanic">
+          <End Role="mechanic" Type="MTModel.Store.mechanic" Multiplicity="1" />
+          <End Role="notification" Type="MTModel.Store.notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mechanic">
+              <PropertyRef Name="MechanicID" />
+            </Principal>
+            <Dependent Role="notification">
+              <PropertyRef Name="MechanicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Model1">
+          <End Role="model" Type="MTModel.Store.model" Multiplicity="1" />
+          <End Role="model/jobslist" Type="MTModel.Store.model/jobslist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="model">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="model/jobslist">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="BookingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="CompleteDate" Type="DateTime" />
+          <NavigationProperty Name="jobs" Relationship="Self.Booking1" FromRole="booking" ToRole="jobs" />
+          <NavigationProperty Name="car" Relationship="Self.Car1" FromRole="booking" ToRole="cars" />
+          <Property Type="String" Name="CustomerEmail" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="BookingDate" Nullable="false" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="RowVersion" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
+        </EntityType>
+        <EntityType Name="car">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Registration" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModelID" Type="Int32" Nullable="false" />
+          <Property Name="FuelType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bookings" Relationship="Self.Car1" FromRole="cars" ToRole="booking" />
+          <NavigationProperty Name="model" Relationship="Self.CarModel" FromRole="cars" ToRole="model" />
+        </EntityType>
+        <EntityType Name="job">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobsListID" Type="Int16" Nullable="false" />
+          <Property Name="BookingID" Type="Int32" Nullable="false" />
+          <Property Name="TimeAllowed" Type="Int16" />
+          <Property Name="TimeTaken" Type="Int16" />
+          <Property Name="Comments" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="booking" Relationship="Self.Booking1" FromRole="jobs" ToRole="booking" />
+          <NavigationProperty Name="jobslist" Relationship="Self.JobsList1" FromRole="jobs" ToRole="jobslist" />
+          <NavigationProperty Name="timessheets" Relationship="Self.JobTimeSheet" FromRole="jobs" ToRole="timessheet" />
+          <Property Type="String" Name="Status" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Type="String" Name="Notes" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="TimeStarted" />
+          <Property Type="SByte" Name="Difficulty" Nullable="false" />
+          <Property Type="DateTime" Name="CompleteDate" />
+          <Property Type="Int32" Name="MechanicID" />
+          <Property Type="DateTime" Name="RowVersion" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
+          <NavigationProperty Name="mechanic" Relationship="MTModel.Mechanic11" FromRole="job" ToRole="mechanic" />
+          <NavigationProperty Name="notifications" Relationship="MTModel.MessageJob" FromRole="job" ToRole="notification" />
+        </EntityType>
+        <EntityType Name="jobscategory">
+          <Key>
+            <PropertyRef Name="JobsCategoryID" />
+          </Key>
+          <Property Name="JobsCategoryID" Type="SByte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="jobslists" Relationship="Self.JobsCategory1" FromRole="jobscategory" ToRole="jobslist" />
+        </EntityType>
+        <EntityType Name="jobslist">
+          <Key>
+            <PropertyRef Name="JobsListID" />
+          </Key>
+          <Property Name="JobsListID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobCategoryID" Type="SByte" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="jobs" Relationship="Self.JobsList1" FromRole="jobslist" ToRole="jobs" />
+          <NavigationProperty Name="jobscategory" Relationship="Self.JobsCategory1" FromRole="jobslist" ToRole="jobscategory" />
+          <NavigationProperty Name="model_jobslist" Relationship="Self.JobslistModel" FromRole="jobslist" ToRole="model_jobslist" />
+        </EntityType>
+        <EntityType Name="make">
+          <Key>
+            <PropertyRef Name="MakeID" />
+          </Key>
+          <Property Name="MakeID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MakeName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="models" Relationship="Self.Make1" FromRole="make" ToRole="model" />
+        </EntityType>
+        <EntityType Name="mechanic">
+          <Key>
+            <PropertyRef Name="MechanicID" />
+          </Key>
+          <Property Name="MechanicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SkillLevel" Type="SByte" Nullable="false" />
+          <Property Name="Available" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="notifications" Relationship="Self.MessageMechanic" FromRole="mechanic" ToRole="notification" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="RowVersion" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="Fixed" />
+          <NavigationProperty Name="jobs" Relationship="MTModel.Mechanic11" FromRole="mechanic" ToRole="job" />
+        </EntityType>
+        <EntityType Name="model">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModelName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MakeID" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="cars" Relationship="Self.CarModel" FromRole="model" ToRole="cars" />
+          <NavigationProperty Name="make" Relationship="Self.Make1" FromRole="model" ToRole="make" />
+          <NavigationProperty Name="model_jobslist" Relationship="Self.Model1" FromRole="model" ToRole="model_jobslist" />
+        </EntityType>
+        <EntityType Name="model_jobslist">
+          <Key>
+            <PropertyRef Name="ModelID" />
+            <PropertyRef Name="JobslistID" />
+          </Key>
+          <Property Name="ModelID" Type="Int32" Nullable="false" />
+          <Property Name="JobslistID" Type="Int16" Nullable="false" />
+          <Property Name="ApproxTime" Type="Int16" Nullable="false" />
+          <Property Name="Difficulty" Type="SByte" Nullable="false" />
+          <NavigationProperty Name="jobslist" Relationship="Self.JobslistModel" FromRole="model_jobslist" ToRole="jobslist" />
+          <NavigationProperty Name="model" Relationship="Self.Model1" FromRole="model_jobslist" ToRole="model" />
+        </EntityType>
+        <EntityType Name="notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MechanicID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Read" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="mechanic" Relationship="Self.MessageMechanic" FromRole="notification" ToRole="mechanic" />
+          <Property Type="Int32" Name="JobID" Nullable="false" />
+          <NavigationProperty Name="job" Relationship="MTModel.MessageJob" FromRole="notification" ToRole="job" />
+        </EntityType>
+        <EntityType Name="timessheet">
+          <Key>
+            <PropertyRef Name="TimeSheetID" />
+          </Key>
+          <Property Name="TimeSheetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JobID" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" />
+          <NavigationProperty Name="job" Relationship="Self.JobTimeSheet" FromRole="timessheet" ToRole="jobs" />
+        </EntityType>
+        <Association Name="Booking1">
+          <End Role="booking" Type="Self.booking" Multiplicity="1" />
+          <End Role="jobs" Type="Self.job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="booking">
+              <PropertyRef Name="BookingID" />
+            </Principal>
+            <Dependent Role="jobs">
+              <PropertyRef Name="BookingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Car1">
+          <End Role="cars" Type="Self.car" Multiplicity="1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CarModel">
+          <End Role="model" Type="Self.model" Multiplicity="1" />
+          <End Role="cars" Type="Self.car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="model">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="cars">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobsList1">
+          <End Role="jobslist" Type="Self.jobslist" Multiplicity="1" />
+          <End Role="jobs" Type="Self.job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobslist">
+              <PropertyRef Name="JobsListID" />
+            </Principal>
+            <Dependent Role="jobs">
+              <PropertyRef Name="JobsListID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobTimeSheet">
+          <End Role="jobs" Type="Self.job" Multiplicity="1" />
+          <End Role="timessheet" Type="Self.timessheet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobs">
+              <PropertyRef Name="JobID" />
+            </Principal>
+            <Dependent Role="timessheet">
+              <PropertyRef Name="JobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobsCategory1">
+          <End Role="jobscategory" Type="Self.jobscategory" Multiplicity="1" />
+          <End Role="jobslist" Type="Self.jobslist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobscategory">
+              <PropertyRef Name="JobsCategoryID" />
+            </Principal>
+            <Dependent Role="jobslist">
+              <PropertyRef Name="JobCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="JobslistModel">
+          <End Role="jobslist" Type="Self.jobslist" Multiplicity="1" />
+          <End Role="model_jobslist" Type="Self.model_jobslist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="jobslist">
+              <PropertyRef Name="JobsListID" />
+            </Principal>
+            <Dependent Role="model_jobslist">
+              <PropertyRef Name="JobslistID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Make1">
+          <End Role="make" Type="Self.make" Multiplicity="1" />
+          <End Role="model" Type="Self.model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="make">
+              <PropertyRef Name="MakeID" />
+            </Principal>
+            <Dependent Role="model">
+              <PropertyRef Name="MakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MessageMechanic">
+          <End Role="mechanic" Type="Self.mechanic" Multiplicity="1" />
+          <End Role="notification" Type="Self.notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mechanic">
+              <PropertyRef Name="MechanicID" />
+            </Principal>
+            <Dependent Role="notification">
+              <PropertyRef Name="MechanicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Model1">
+          <End Role="model" Type="Self.model" Multiplicity="1" />
+          <End Role="model_jobslist" Type="Self.model_jobslist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="model">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="model_jobslist">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MTEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="bookings" EntityType="Self.booking" />
+          <EntitySet Name="cars" EntityType="Self.car" />
+          <EntitySet Name="jobs" EntityType="Self.job" />
+          <EntitySet Name="jobscategories" EntityType="Self.jobscategory" />
+          <EntitySet Name="jobslists" EntityType="Self.jobslist" />
+          <EntitySet Name="makes" EntityType="Self.make" />
+          <EntitySet Name="mechanics" EntityType="Self.mechanic" />
+          <EntitySet Name="models" EntityType="Self.model" />
+          <EntitySet Name="model_jobslist" EntityType="Self.model_jobslist" />
+          <EntitySet Name="notifications" EntityType="Self.notification" />
+          <EntitySet Name="timessheets" EntityType="Self.timessheet" />
+          <AssociationSet Name="Booking1" Association="Self.Booking1">
+            <End Role="booking" EntitySet="bookings" />
+            <End Role="jobs" EntitySet="jobs" />
+          </AssociationSet>
+          <AssociationSet Name="Car" Association="Self.Car1">
+            <End Role="cars" EntitySet="cars" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="CarModel" Association="Self.CarModel">
+            <End Role="model" EntitySet="models" />
+            <End Role="cars" EntitySet="cars" />
+          </AssociationSet>
+          <AssociationSet Name="JobsList1" Association="Self.JobsList1">
+            <End Role="jobslist" EntitySet="jobslists" />
+            <End Role="jobs" EntitySet="jobs" />
+          </AssociationSet>
+          <AssociationSet Name="JobTimeSheet" Association="Self.JobTimeSheet">
+            <End Role="jobs" EntitySet="jobs" />
+            <End Role="timessheet" EntitySet="timessheets" />
+          </AssociationSet>
+          <AssociationSet Name="JobsCategory1" Association="Self.JobsCategory1">
+            <End Role="jobscategory" EntitySet="jobscategories" />
+            <End Role="jobslist" EntitySet="jobslists" />
+          </AssociationSet>
+          <AssociationSet Name="JobslistModel" Association="Self.JobslistModel">
+            <End Role="jobslist" EntitySet="jobslists" />
+            <End Role="model_jobslist" EntitySet="model_jobslist" />
+          </AssociationSet>
+          <AssociationSet Name="Make1" Association="Self.Make1">
+            <End Role="make" EntitySet="makes" />
+            <End Role="model" EntitySet="models" />
+          </AssociationSet>
+          <AssociationSet Name="MessageMechanic" Association="Self.MessageMechanic">
+            <End Role="mechanic" EntitySet="mechanics" />
+            <End Role="notification" EntitySet="notifications" />
+          </AssociationSet>
+          <AssociationSet Name="Model1" Association="Self.Model1">
+            <End Role="model" EntitySet="models" />
+            <End Role="model_jobslist" EntitySet="model_jobslist" />
+          </AssociationSet>
+          <AssociationSet Name="Mechanic11" Association="MTModel.Mechanic11">
+            <End Role="mechanic" EntitySet="mechanics" />
+            <End Role="job" EntitySet="jobs" />
+          </AssociationSet>
+          <AssociationSet Name="MessageJob" Association="MTModel.MessageJob">
+            <End Role="job" EntitySet="jobs" />
+            <End Role="notification" EntitySet="notifications" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="Mechanic11">
+          <End Type="MTModel.mechanic" Role="mechanic" Multiplicity="0..1" />
+          <End Type="MTModel.job" Role="job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mechanic">
+              <PropertyRef Name="MechanicID" />
+            </Principal>
+            <Dependent Role="job">
+              <PropertyRef Name="MechanicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MessageJob">
+          <End Type="MTModel.job" Role="job" Multiplicity="1" />
+          <End Type="MTModel.notification" Role="notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="job">
+              <PropertyRef Name="JobID" />
+            </Principal>
+            <Dependent Role="notification">
+              <PropertyRef Name="JobID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MTModelStoreContainer" CdmEntityContainer="MTEntities">
+          <EntitySetMapping Name="bookings">
+            <EntityTypeMapping TypeName="MTModel.booking">
+              <MappingFragment StoreEntitySet="booking">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
+                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="CompleteDate" ColumnName="CompleteDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cars">
+            <EntityTypeMapping TypeName="MTModel.car">
+              <MappingFragment StoreEntitySet="cars">
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Registration" ColumnName="Registration" />
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="FuelType" ColumnName="FuelType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="jobs">
+            <EntityTypeMapping TypeName="MTModel.job">
+              <MappingFragment StoreEntitySet="jobs">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="MechanicID" ColumnName="MechanicID" />
+                <ScalarProperty Name="CompleteDate" ColumnName="CompleteDate" />
+                <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
+                <ScalarProperty Name="TimeStarted" ColumnName="TimeStarted" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="JobsListID" ColumnName="JobsListID" />
+                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+                <ScalarProperty Name="TimeAllowed" ColumnName="TimeAllowed" />
+                <ScalarProperty Name="TimeTaken" ColumnName="TimeTaken" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="jobscategories">
+            <EntityTypeMapping TypeName="MTModel.jobscategory">
+              <MappingFragment StoreEntitySet="jobscategory">
+                <ScalarProperty Name="JobsCategoryID" ColumnName="JobsCategoryID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="jobslists">
+            <EntityTypeMapping TypeName="MTModel.jobslist">
+              <MappingFragment StoreEntitySet="jobslist">
+                <ScalarProperty Name="JobsListID" ColumnName="JobsListID" />
+                <ScalarProperty Name="JobCategoryID" ColumnName="JobCategoryID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="makes">
+            <EntityTypeMapping TypeName="MTModel.make">
+              <MappingFragment StoreEntitySet="make">
+                <ScalarProperty Name="MakeID" ColumnName="MakeID" />
+                <ScalarProperty Name="MakeName" ColumnName="MakeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mechanics">
+            <EntityTypeMapping TypeName="MTModel.mechanic">
+              <MappingFragment StoreEntitySet="mechanic">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="MechanicID" ColumnName="MechanicID" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SkillLevel" ColumnName="SkillLevel" />
+                <ScalarProperty Name="Available" ColumnName="Available" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="models">
+            <EntityTypeMapping TypeName="MTModel.model">
+              <MappingFragment StoreEntitySet="model">
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="MakeID" ColumnName="MakeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="model_jobslist">
+            <EntityTypeMapping TypeName="MTModel.model_jobslist">
+              <MappingFragment StoreEntitySet="model/jobslist">
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="JobslistID" ColumnName="JobslistID" />
+                <ScalarProperty Name="ApproxTime" ColumnName="ApproxTime" />
+                <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notifications">
+            <EntityTypeMapping TypeName="MTModel.notification">
+              <MappingFragment StoreEntitySet="notification">
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="MechanicID" ColumnName="MechanicID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Read" ColumnName="Read" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="timessheets">
+            <EntityTypeMapping TypeName="MTModel.timessheet">
+              <MappingFragment StoreEntitySet="timessheet">
+                <ScalarProperty Name="TimeSheetID" ColumnName="TimeSheetID" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

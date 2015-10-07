@@ -1,0 +1,71 @@
+﻿@model MechanicTracker.mechanic
+
+<fieldset>
+    <legend>Mechanic Details</legend>
+    <div class="form-group" style="">
+    <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Firstname)</label>
+        <div class="col-sm-3">
+            <label>@Html.DisplayFor(model => model.Firstname)</label>
+        </div>
+    </div>
+
+    <div class="form-group" style="">
+    <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
+        <div class="col-sm-3">
+            <label>@Html.DisplayFor(model => model.LastName)</label>
+        </div>
+    </div>
+
+    <div class="form-group" style="">
+    <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+        <div class="col-sm-3">
+            <label>@Html.DisplayFor(model => model.Email)</label>
+        </div>
+    </div>
+
+    <div class="form-group" style="">
+    <label class="col-sm-5 control-label"> @Html.DisplayNameFor(model => model.PhoneNumber)</label>
+        <div class="col-sm-3">
+            <label>@Html.DisplayFor(model => model.PhoneNumber)</label>
+        </div>
+    </div>
+    
+    <div class="form-group" style="">
+    <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.SkillLevel)</label>
+        <div class="col-sm-3">
+            <label>@Html.DisplayFor(model => model.SkillLevel)</label>
+               @* @foreach (var item in Model) {
+                     @for (int i = 0; i < item.SkillLevel; i++)
+                    {
+                        <span class="glyphicon glyphicon-star"></span>
+                    }
+                @Html.DisplayFor(model => model.SkillLevel)
+                }*@
+            
+        </div>
+    </div>
+@*    <div class="form-group" style="">
+    <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Available)</label>
+        <div class="col-sm-3">
+            <label >@Html.DisplayFor(model => model.Available)</label>
+        </div>
+    </div>*@
+    @*<div class="form-group" style="">
+    <label class="col-sm-5 control-label">@Html.DisplayNameFor(model => model.Password)</label>
+        <div class="col-sm-3">
+            <label>@Html.DisplayFor(model => model.Password)</label>
+        </div>
+    </div>*@
+
+</fieldset>
+    
+    <div class="form-group" style="">
+    <label class="col-sm-5 control-label"></label>
+        <div class="col-sm-3">
+            <span class ="btn btn-danger btn-xs" onclick="editMechDetails(@Model.MechanicID)">Edit Details</span>
+        </div>
+    </div>
+<p>
+    
+    
+</p>

@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Mechanic Jobs";
+}
+<div class="row" style="margin-top: 70px; margin-left:20px;">
+    <div class="col-md-3">
+        <h3>Mechanic Jobs</h3>
+    </div>
+    <div class="col-md-3" style="margin-top: 25px;">
+        <label>Mechanic:  </label>@Html.DropDownList("MechanicId", new SelectList(ViewBag.MechanicsList, "MechanicID", "FullName", ViewBag.MechanicsList[0]), new { @onchange = "MechanicDetails(this.value); MechanicJobs(this.value, 'All'); $('select[name=Filter]').val('1');", @class="disabled" })
+    </div>
+    <div class="col-md-3" style="margin-top: 25px;">
+        <label>Filter:  </label>
+        <select name="Filter" onchange="MechanicDetails(), MechanicJobs(null, this.value);">
+            <option value="1" selected>All</option>
+            <option value="2">On Time</option>
+            <option value="3">Acceptable Time</option>
+            <option value="4">Over Time</option>
+        </select>
+    </div>
+</div>
+<hr />
+<div class="row" style="margin-left:20px;">
+    <div class="col-md-7">
+        <h3>Jobs</h3>
+        <div id="JobsTable"></div>
+    </div>
+    <div class="col-md-5">
+        <h3 id="MechHead">Mechanic Details</h3>
+        <h3 id="JobHead" style="display:none;">Job Details</h3>
+        <div id="Details"></div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            MechanicDetails($("select[name=MechanicId]").val());
+            MechanicJobs($("select[name=MechanicId]").val(), "All")
+        });
+
+        function MechanicDetails(MechanicID, Filter) {
+            $("select[name=MechanicId]").addClass("disabled").attr("disabled", "disabled");
+            $("select[name=Filter]").addClass("disabled").attr("disabled", "disabled");
+            if (MechanicID == null) {
+                MechanicID = $("select[name=MechanicId]").val();
+            }
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("MechanicDetails")',
+                data: { MechanicId: MechanicID, Filter: Filter },
+                success: function (data) {
+                    $("#JobHead").hide();
+                    $("#Details").hide();
+                    $("#Details").html(data);
+                    $('.rating').rating({
+                        filled: 'glyphicon glyphicon-star',
+                        empty: 'glyphicon glyphicon-star-empty'
+                    });
+                    $("#MechHead").fadeIn(1000);
+                    $("#Details").fadeIn(1000);
+                },
+                error: function () {
+                    $("#Details").hide();
+                    $("#Details").html("<p>Error retrieving Mechanic Details</p>");
+                    $("#Details").fadeIn(1000);
+                },
+                complete: function () {
+                    $("select[name=MechanicId]").removeAttr("disabled").removeClass("disabled");
+                    $("select[name=Filter]").removeAttr("disabled").removeClass("disabled");
+                }
+            });
+        }
+
+        function MechanicJobs(MechanicID, Filter) {
+            if (MechanicID == null) {
+                MechanicID = $("select[name=MechanicId]").val();
+            }
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobList")',
+                data: { MechanicId: MechanicID, filter: Filter },
+                success: function (data) {
+                    $("#JobsTable").hide();
+                    $("#JobsTable").html(data);
+                    $("#JobsTable").fadeIn(1000);
+                },
+                error: function () {
+                    $("#Details").hide();
+                    $("#Details").html("<p>Error retrieving Mechanic's Jobs</p>");
+                    $("#Details").fadeIn(1000);
+                }
+            });
+        }
+
+        function JobDetails(JobID) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobDetails")',
+                data: { JobId: JobID },
+                success: function (data) {
+                    $("#MechHead").hide();
+                    $("#Details").hide();
+                    $("#Details").html(data);
+                    $('#jobdifficulty').rating({
+                        filled: 'glyphicon glyphicon-wrench',
+                        empty: 'glyphicon glyphicon-asterisk'
+                    });
+                    $("#JobHead").fadeIn(1000);
+                    $("#Details").fadeIn(1000);
+                },
+                error: function () {
+                    $("#Details").html('');
+                    $("#Details").hide();
+                    $("#Details").append("<p>Error retrieving Job Details</p>");
+                    $("#Details").append("<button onclick='MechanicDetails($('select[name=MechanicId]').val(), 'All');' style='margin-top:20px;' class='btn btn-danger btn-sm'>Back to Mechanic Details</button>");
+                    $("#Details").fadeIn(1000);
+                }
+            });
+        }
+    </script>
+}

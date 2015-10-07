@@ -1,0 +1,232 @@
+﻿@model MechanicTracker.job
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row" style="margin-top: 65px;">
+    <div class="col-md-2">
+        <h3 class="labelheader">Jobs List</h3>
+    </div>
+    <div class="col-md-4">
+        <label style="margin-top: 22px;">Choose Jobs</label>
+        &nbsp;
+            <select id="dropDownJobs" onchange="GetJobs(this.value)">
+                <option value="allJobs" selected>All Jobs</option>
+                <option value="unassignedJobs">Unassigned Jobs</option>
+                <option value="completed">Completed</option>
+            </select>
+    </div>
+
+    <div class="col-md-4">
+        <div id="dropDownMechanics" hidden="hidden">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-2">
+                    <h3 class="labelheader">Mechanics</h3>
+                </div>
+                <div class="col-md-5" style="margin-top: 22px;">
+                    <select id="dropDownMech" onchange="allMechanics($('#jobID').val(), value, $('#nameOfJob').val(), $('#registration').val())">
+                        <option value='allMechanics'>All Mechanics</option>
+                        <option value='available'>Available</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="nameOfJob"></div>
+<div id="registration"></div>
+
+<div class="row">
+    <div class="col-md-7">
+        <div id="ListOfJobs"></div>
+
+    </div>
+    <div class="col-md-5">
+        <div id="jobForMechanic" hidden="hidden"></div>
+        <input type="hidden" name="name" id="name" />
+        <input type="hidden" name="reg" id="reg" />
+        <div id="Details" hidden="hidden">
+        </div>
+        <div id="timeAllowedButton" hidden="hidden">
+            <input type="hidden" name="jobID" id="jobID" />
+            <input type="hidden" name="mechanicID" id="mechanicID" />
+            <p id="mechanicName"></p>
+
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-5" style="margin-top: 10px;">
+                    <label>&nbsp&nbsp&nbsp Allowed Time for job:</label>
+                </div>
+                <div class="col-md-6" style="margin-top: 10px;">
+                    <input type="text" id="TimeAllowed" name="TimeAllowed" /><div id="TimeAllowedError" style="color: red; font-style: italic"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px">
+                <div class=" col-md-offset-5 col-md-6">
+                    <button onclick="AssignMechanicBtn($('#jobID').val(), $('#mechanicID').val())" class="btn btn-danger btn-xs pull-right">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            GetJobs("allJobs");
+
+        });
+
+        //When dropdown list "dropDownJobs" selection is changed it filters jobs being displayed in _JobDisplay 
+        function GetJobs(filter) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("JobDisplay")',
+                data: { filteredJobs: filter },
+                success: function (data) {
+                    $('#ListOfJobs').hide();
+                    $('#ListOfJobs').html(data);
+                    $('#ListOfJobs').fadeIn('slow');
+                },
+                error: function (data) {
+                    $('#ListOfJobs').html('<h3>An error has occurred loading mechanics</h3>')
+                }
+            })
+        }
+
+
+        //list of mechanics that will be added to the job with matching jobId on DislpayAllMechanics. 
+        //called when Add Mechanic button on _JobDisplay page is pressed. 
+        function allMechanics(jobId, dropDownList, name, reg) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("DisplayAllMechanics")',
+                data: { id: jobId, filteredMechanics: dropDownList },
+                success: function (data) {
+                    $('#Details, #timeAllowedButton').hide();
+                    $('#Details').html(data);
+                    $('#Details, #dropDownMechanics').fadeIn();
+                    GetJobTimeAllowed(jobId);
+                    $('#jobID').val(jobId);
+                    $('#nameOfJob').val(name);
+                    $('#registration').val(reg);
+                    $('#jobForMechanic').html("Available mechanics for the job '" + name + "' on car " + reg);
+                    $('#jobForMechanic').fadeIn();
+                },
+                error: function (data) {
+                    $('#Details').html('<h3>An error has occurred loading mechanics</h3>')
+                }
+            })
+
+        }
+
+        //display message on screen so user knows what car/job they have selected, so that they can add mechanics
+        function displayJobName(name, reg) {
+            $('#name').val(name);
+            $('#reg').val(reg);
+
+
+        }
+
+
+        //Gets the allwed time for the selected job
+        function GetJobTimeAllowed(jobId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetTimeOfJob")',
+                data: { id: jobId },
+                success: function (data) {
+                    $('#TimeAllowed').val(data);
+                },
+                error: function () {
+                    $('#TimeAllowed').val();
+                }
+            })
+
+        }
+
+        //shows the time allowed for the job in a textbox
+        function showJobTimeAllowed() {
+            $('#timeAllowedButton').fadeIn();
+
+        }
+
+
+        //displays before adding a mechanic to a job to confirm
+
+        //display message on screen so user knows what car/job they have selected, so that they can add mechanics
+        //setTimeout(function displayJobName(name, reg) {
+        //    $('#jobForMechanic').html("Available mechanics for the job '" + name + "' on car " + reg);
+        //}, 1000);
+
+        function displayJobName(name, reg) {
+            $('#jobForMechanic').fadeIn(3000).html("<div class='col-md-12'><b>&nbsp Available mechanics for the job:</b> " + name + "</div><div class='col-md-12'> <b>&nbsp On car reg:</b>  " + reg);
+        }
+
+        function ShowConfirmMechanicBtn(mechanicId, jobId, reg, firstName, lastName) {
+            var first = firstName[0].toUpperCase() + firstName.slice(1);
+            var last = lastName[0].toUpperCase() + lastName.slice(1);
+            $('#mechanicID').val(mechanicId);
+            $('#jobID').val(jobId);
+            $('#mechanicName').html("<div class='col-md-12'><b>Assign </b>" + first + " " + last + "<b> to this job on car :</b> " + reg + "?</div>");
+        }
+
+        $('#TimeAllowed').on('input', function () {
+            $('#TimeAllowedError').html("");
+        });
+
+        //creates the notification gets when mechanic gets added to the job
+        function notification(id) {
+            $.ajax({
+                url: '@Url.Action("AddNotification")',
+                type: "POST",
+                data: { id: id },
+                success: function () {
+                },
+                error: function (data) {
+                    $('#ShowConfrimMechanicBtn').html('<h3>An occered adding a mechanic to a job</h3>')
+                }
+            })
+        }
+
+        //assigning a mechanic to a job
+        function AssignMechanicBtn(jobID, mechanicID) {
+            var theTime = $('#TimeAllowed').val();
+            if (Math.floor(theTime) == theTime && $.isNumeric(theTime)) {   //will not  allow a string to be entered into time allowed textbox
+                if (theTime > 0) {  //makes sure time alloed textbox is not a minus number
+                    $.ajax({
+                        url: '@Url.Action("AssignMechanic")',
+                        type: "POST",
+                        data: { jobID: jobID, mechanicID: mechanicID, time: $('#TimeAllowed').val() },
+                        success: function (data) {
+                            //notification(jobID);
+                            toastr.success("Job has been added successfully");
+                            $("#dropDownJobs").val('allJobs');
+                            $("#dropDownMech").val('allMechanics');
+                            $('#dropDownMechanics, #jobForMechanic, #timeAllowedButton, #Details').hide();
+                            GetJobs("allJobs");
+
+                        },
+                        error: function (data) {
+                            $('#ShowConfrimMechanicBtn').html('<h3>An occered adding a mechanic to a job</h3>');
+
+                        }
+                    })
+                }
+                else {
+                    $('#TimeAllowedError').html('This number must be over 0');
+                }
+            }
+            else {
+                $('#TimeAllowedError').html('No. of minutes should be entered here');
+            }
+        }
+
+    </script>
+}

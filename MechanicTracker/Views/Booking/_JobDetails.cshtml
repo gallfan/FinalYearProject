@@ -1,0 +1,71 @@
+﻿@using PagedList;
+@model IPagedList<MechanicTracker.job>
+@using MechanicTracker.Models;
+
+@if (Model.Any())
+{
+<fieldset>
+<legend style="margin-top:20px;">Jobs</legend>
+<div id="jobs"></div>
+
+<table class="table table-bordered">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.First().jobslist.Name)
+        </th>
+         <th>
+            @Html.DisplayNameFor(model => model.First().jobslist.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Status)
+        </th>
+       
+       
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.jobslist.Name, "_Capitalize")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.jobslist.Description)
+        </td>
+        
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Status, "_Capitalize")
+        </td>
+        
+         
+        
+    </tr>
+}
+</table>
+    </fieldset>
+  <div class="pagedList" data-otf-target="jobs">
+          @Html.PagedListPager(Model, Page => Url.Action("Getjobs", new { id=Model.First().BookingID,Page}),PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            }, new AjaxOptions(){  HttpMethod = "GET", UpdateTargetId = "jobs"}) )
+      </div>
+}
+else
+{
+    <h3>No Jobs for booking</h3>
+}
+             
+
+          
+
+

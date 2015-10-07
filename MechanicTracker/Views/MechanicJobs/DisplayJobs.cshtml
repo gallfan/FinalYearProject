@@ -1,0 +1,36 @@
+﻿@model MechanicTracker.job
+@{
+    ViewBag.Title = "DisplayJobs";
+    Layout = "~/Views/Shared/_Layout_Mobile.cshtml";
+}
+<div class="container">
+    <div class="col-xs-12">
+        <h2 class="text-center">Job Assigned</h2>
+    </div>
+
+    <div class="col-xs-12" style="border-radius: 10px; border-style: solid; border-width: 2px">
+        <div style="border-radius: 10px; border-width: 2px">
+        <p class="text-center"><strong><b>Job Name</b></strong></p> 
+        <p class="text-center">@Html.DisplayFor(model => model.jobslist.Name)</p>
+        
+        <p class="text-center"><strong><b>Job Description</b></strong></p>  
+        <p class="text-center">@Html.DisplayFor(model => model.jobslist.Description)</p>
+
+        <p class="text-center"><strong><b>Notes</b></strong></p>
+        <p class="text-center">@Html.DisplayFor(model => model.Notes, "_HandleStringNull")</p>
+        <br />
+        
+        <a href="/MechanicJobs/JobMenu?id=@Model.JobID" style="width:50%; margin-left:25%; margin-bottom:5%;" class="btn btn-danger">Select Job</a>
+       
+    </div>
+    
+</div>
+ @Html.ActionLink("Back to Notifications", "SelectNotifications", null,
+                    new { @class = "btn btn-danger", style= "width:100%; margin-top:5%;" })
+
+
+
+</div><!-- /Container -->
+
+
+

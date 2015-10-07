@@ -1,0 +1,29 @@
+﻿@model MechanicTracker.jobscategory
+
+@if (Model != null)
+{
+    <div class="row">
+        <label class="col-md-6">@Html.DisplayNameFor(model => model.Type)</label>
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.Type, "_Capitalize")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">Number of Jobs:</label>
+        <div class="col-md-6">
+            @ViewBag.JobsCount
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">Completed on Time:</label>
+        <div class="col-md-6">
+            @ViewBag.JobCountOnTime
+        </div>
+    </div>
+}
+else
+{
+    <p>A problem has occured when loading the Category Details.</p>
+}
+
+

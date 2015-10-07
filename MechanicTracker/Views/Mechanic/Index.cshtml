@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MechanicTracker.mechanic>
+
+<div class="row" style="margin-top: 90px">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2>Choose A Mechanic :</h2>
+            <select onchange="getMechanic(value); getJobList(value)">
+                @foreach (var item in Model)
+                {
+
+                    <option value='@Html.DisplayFor(modelItem => item.MechanicID) '>
+                        @Html.DisplayFor(modelItem => item.Firstname) &nbsp;
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </option>
+                }
+            </select>
+        </div>
+
+
+        <div class="panel-body" style="font-size:larger">
+            <div class="col-md-6" id="mechanicDetails"></div>
+            <div class="col-md-6" id="jobList"></div>
+            <div class="col-md-12" id="jobDetails"></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        getMechanic(0);
+        getJobList(0);
+    });
+
+    function getMechanic(mechanicId) {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("MechanicDetails")',
+            data: { id: mechanicId },
+            success: function (data) {
+                $('#mechanicDetails').hide();
+                $('#mechanicDetails').html(data);
+                $('#mechanicDetails').fadeIn('slow');
+            },
+            error: function (data) {
+                $('#mechanicDetails').html('<h3>An error has occurred loading mechanics</h3>')
+            }
+        })
+    }
+
+    function getJobList(mechanicId) {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetJobList")',
+                data: { id: mechanicId },
+                success: function (data) {
+                    $('#jobList').hide();
+                    $('#jobList').html(data);
+                    $('#jobList').fadeIn('slow');
+                },
+                error: function (data) {
+                    $('#jobList').html('<h3>An error has occurred loading job list</h3>')
+                }
+            })
+        }
+
+        function showJobDetails(jobId) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetJobDetails")',
+                data: { id: jobId },
+                success: function (data) {
+                    $('#jobDetails').hide();
+                    $('#jobDetails').html(data);
+                    $('#jobDetails').fadeIn('slow');
+                },
+                error: function (data) {
+                    $('#jobDetails').html('<h3>An error has occurred loading job details</h3>')
+                }
+            })
+        }
+    </script>
+}

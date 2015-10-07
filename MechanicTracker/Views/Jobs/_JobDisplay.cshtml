@@ -1,0 +1,90 @@
+﻿﻿@model PagedList.IPagedList<MechanicTracker.job>
+@using PagedList.Mvc
+
+<div class="panel" id="joblist">
+    @*<div class="row">
+            <div class="col-md-4">
+                <label id="labelheaderj">Jobs List</label>
+            </div>*@
+
+    <div class="panel-body" style="margin-top: -10px;">
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-bordered">
+                <tr>
+                    <th>Jobs
+                    </th>
+                    <th>Car Reg.
+                    </th>
+                    <th>Difficutly
+                    </th>
+                    <th>Time
+                    </th>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.jobslist.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.booking.car.Registration)
+                        </td>
+                        <td>
+                            @for (int i = 0; i < item.Difficulty; i++)
+                            {
+                                <span class="glyphicon glyphicon-wrench"></span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TimeAllowed)
+                        </td>
+                        <td>
+                            @if (item.MechanicID == null && item.Status != "complete")
+                            {
+                                <span class="btn btn-danger btn-xs" onclick="allMechanics('@item.JobID', '','@item.jobslist.Name','@item.booking.car.Registration')">Add
+                                            Mechanic
+                                </span>
+                            }
+                            else if(item.Status=="complete")
+                            {
+                                @String.Format("Completed");
+                            }
+                            else
+                            {
+                                @String.Format("Assigned");
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+            @Html.PagedListPager(Model, page => Url.Action("JobDisplay", new { filteredJobs = ViewBag.filter, page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            },
+                     new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListOfJobs" }))
+        }
+        else
+        {
+            <div><strong><mark>Sorry, There are currently no Jobs</mark></strong></div>
+        }
+    </div>
+</div>
+
+
+
+

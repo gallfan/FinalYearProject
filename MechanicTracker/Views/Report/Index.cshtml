@@ -1,0 +1,318 @@
+﻿@{
+    ViewBag.Title = "Reports";
+}
+
+<div class="container" style="margin-top:100px;">
+    <div id="Stats"></div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            //MechanicStats(1);
+            CategoryStats(1)
+
+            //Set some default settings for the Highchart Charts
+            //Highcharts.setOptions({
+            //    chart: {
+            //        backgroundColor: '#000000',
+            //        style: {
+            //            fontFamily: '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
+            //            fontSize: '16px',
+            //            color: "#FFFFFF"
+            //        }
+            //    },
+            //    lang: {
+            //        noData: "No Data Available to Display"
+            //    },
+            //    noData: {
+            //        style: {
+            //            "color": "#ffffff",
+            //            "fontSize": "18px",
+            //            "fontWeight": "bold"
+            //        }
+            //    },
+            //    credits: {
+            //        enabled: false
+            //    },
+            //    legend: {
+            //        enabled: true,
+            //        itemStyle: { "color": "#ffffff" },
+            //        itemHoverStyle: { "color": "#ffffff", "cursor": "default" }
+            //    },
+            //    title: {
+            //        align: "left",
+            //        margin: 0,
+            //        style: { "color": "#ffffff", "fontSize": "20px", "fontWeight": "bold" }
+            //    },
+            //    tooltip: {
+            //        hideDelay: 300
+            //    }
+            //});
+        });
+
+        function MechanicStats(MechanicId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("MechanicStats")',
+                data: { id: MechanicId },
+                success: function (data) {
+                    $("#Stats").hide();
+                    $("#Stats").html(data);
+                    $("#Stats").fadeIn();
+                    $.when(RetrieveJSON(MechanicId, '@Url.Action("MechanicTimeStats")', PieChart, '#PieChart', 'Time Taken', 'Job Times'))
+                        .then(RetrieveJSON(MechanicId, '@Url.Action("MechanicCategoryJobs")', Column, '#ColumnChart', 'Job Categories', 'No. of Jobs'))
+                        .then(RetrieveJSON(MechanicId, '@Url.Action("MechanicJobsMonth")', LineChart, '#LineChart', 'Monthly Jobs', 'Number of Jobs'));
+                },
+                error: function () {
+                    $("#Stats").hide();
+                    $("#Stats").html("Error retrieving Data");
+                    $("#Stats").fadeIn();
+                }
+            });
+        }
+        function CategoryStats(CategoryId) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("JobCategoryStats")',
+                data: { id: CategoryId },
+                success: function (data) {
+                    $("#Stats").hide();
+                    $("#Stats").html(data);
+                    $("#Stats").fadeIn();
+                    $.when(RetrieveJSON(CategoryId, '@Url.Action("CategoryTimeStats")', PieChart, "#PieChart", "Category Jobs Time Taken", "Category Job Time"))
+                        .then(RetrieveJSON(CategoryId, '@Url.Action("CategoryJobListJobs")', Column, "#ColumnChart", "Category Jobs Count", "No. of Jobs"))
+                        .then(RetrieveJSON(CategoryId, '@Url.Action("CategoryJobsMonth")', LineChart, '#LineChart', 'Monthly Jobs', 'Number of Jobs'));
+                },
+                error: function () {
+                    $("#Stats").hide();
+                    $("#Stats").html("Error retrieving Data");
+                    $("#Stats").fadeIn();
+                }
+            });
+        }
+
+        //function AjaxHelper(Type, Url, Data, Method) {
+        //    $.ajax({
+        //        type: Type,
+        //        url: Url,
+        //        data: Data,
+        //        success: function(data){
+        //            Method(true, data)
+        //        },
+        //        error: Method(false)
+        //    });
+        //}
+
+        //Retrieves the Data for each of the Charts to be created
+        //function RetrieveJSON(Id, url, method, ele, title, name) {
+        //    $.ajax({
+        //        type: "GET",
+        //        dataType: "json",
+        //        url: url,
+        //        data: { id: Id },
+        //        success: function (data) {
+        //            method(data, ele, title, name);
+        //        }
+        //    });
+        //}
+
+        //Creates Pie Charts using data passed in to create a different one for each different pie chart needed
+        function PieChart(PieData, ele, title, name) {
+            if (PieData != null) {
+                var a = PieData[0] > 0 ? PieData[0] : null;
+                var b = PieData[1] > 0 ? PieData[1] : null;
+                var c = PieData[2] > 0 ? PieData[2] : null;
+            }
+            else
+                a = b = c = null;
+
+            $(ele).highcharts({
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 60,
+                        beta: 0,
+                    },
+                    margin: [-30, 0, 10, 0],
+                },
+                title: {
+                    text: title,
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size: 14px"><b>{point.key}</b></span><br/>',
+                    pointFormat: 'Number: <b>{point.y}</b><br/>Percentage: <b>{point.percentage:.1f}%</b>',
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        point: {
+                            events: {
+                                legendItemClick: function () {
+                                    return false;
+                                }
+                            }
+                        },
+                        center: ["50%", "50%"],
+                        colors: ["rgba(51,204,51,0.8)", "rgba(255,153,0, 0.8)", "rgba(255,0,0, 0.6)"],
+                        cursor: 'pointer',
+                        depth: 30,
+                        dataLabels: {
+                            enabled: false,
+                            format: '{point.name}',
+                            borderRadius: 10,
+                            connectorWidth: 1,
+                            distance: 5,
+                            style: {
+                                fontWeight: 'bold',
+                                fontsize: "12px",
+                                color: "#ffffff"
+                            }
+                        },
+                        showInLegend: true,
+                        shadow: true,
+                        slicedOffset: 20,
+                        states: {
+                            hover: {
+                                brightness: 0.2
+                            }
+                        },
+                        startAngle: 45,
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: name,
+                    data: [
+                        ['On Time', a],
+                        ['Acceptable Time', b],
+                        ['Over Time', c]
+                    ]
+                }]
+            });
+        }
+
+        //Creates Column Charts using data passed in to create a different one for each different Column Chart Needed
+        function Column(data, ele, title, name) {
+            var Group = new Array();//x-axis data
+            var Complete = new Array();//y-axis data one for stacked column
+            var Incomplete = new Array();//y-axis data two for stacked column
+            for (var i = 0; i < data.length; i++) {
+                Group.push(data[i].Group);
+                Complete.push(data[i].Count[0]);
+                Incomplete.push(data[i].Count[1]);
+            }
+            $(ele).highcharts({
+                colors: ["rgba(33,150,243,0.8)", "rgba(255,153,0,0.8)"],
+                chart: {
+                    type: 'column',
+                    margin: 75,
+                    options3d: {
+                        enabled: true,
+                        alpha: 10,
+                        beta: 25,
+                        depth: 70
+                    }
+                },
+                title: {
+                    text: title
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        depth: 25,
+                        events: {
+                            legendItemClick: function () {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: Group,
+                },
+                yAxis: {
+                    opposite: false,
+                    title: {
+                        text: "Number of Jobs",
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size: 14px"><b>{point.x}</b></span><br/>',
+                    pointFormat: 'Number: <b>{point.y}</b><br/>Percentage: <b>{point.percentage:.1f}%</b>',
+                },
+                series: [{
+                    name: 'Incomplete',
+                    data: Incomplete
+                }, {
+
+                    name: 'Complete',
+                    data: Complete
+                }]
+            });
+        }
+
+        //Creates Line Charts using data passed in to create a different one for each different Line chart needed
+        function LineChart(data, ele, title, name) {
+            //Putting the Data into two arrays, one to be used on the x-axix and the other one the y-axis
+            var Group = new Array();
+            var Count = new Array();
+            for (var i = 0; i < data.length; i++) {
+                Group.push(data[i].Month);
+                Count.push(data[i].Count);
+            }
+
+            $(ele).highcharts({
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: title
+                },
+                xAxis: {
+                    categories: Group
+                },
+                yAxis: {
+                    title: {
+                        text: name
+                    },
+                    minTickInterval: 0.5,
+                    min: 0,
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                plotOptions: {
+                    line: {
+                        events: {
+                            legendItemClick: function () {
+                                return false;
+                            }
+                        },
+                        enableMouseTracking: true,
+                        color: "rgba(255,153,0,0.8)",
+                        lineWidth: 3,
+                        marker: {
+                            symbol: "diamond",
+                            radius: 6
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size: 14px"><b>{point.x}</b></span><br/>',
+                    pointFormat: 'Number: <b>{point.y}</b></b>',
+                },
+                series: [{
+                    name: 'Number of Jobs',
+                    data: Count
+                }]
+            });
+        };
+
+    </script>
+
+}

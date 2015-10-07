@@ -1,0 +1,11 @@
+﻿@model MechanicTracker.job
+
+@if (Model.TimeStarted >= DateTime.Now.AddDays(-2))
+{
+    <span class="glyphicon glyphicon-ok" style="color:green;"></span>
+}
+else
+{
+    <span class="glyphicon glyphicon-exclamation-sign" style="color:#FF9900;"></span>
+}
+

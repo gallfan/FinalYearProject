@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<MechanicTracker.job>
+@using PagedList.Mvc;
+
+@if (Model.Any() && Model != null)
+{  
+    <table class="table table-condensed">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().jobslist.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().jobslist.jobscategory.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().TimeAllowed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().TimeStarted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Difficulty)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.jobslist.Name, "_Capitalize")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.jobslist.jobscategory.Type, "_Capitalize")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeAllowed, "_Time")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeStarted)
+                </td>
+                <td>
+                    <input type="hidden" class="rating difficulty" readonly="readonly" value="@item.Difficulty"/>
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item, "_ActiveJobStatus")
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div class="text-center"><span class="glyphicon glyphicon-ok" style="color: green;"></span>-No Problem / <span class="glyphicon glyphicon-exclamation-sign" style="color: #FF9900;"></span>- Job Running Over Two Days</div>
+
+    @Html.PagedListPager(Model, page => Url.Action("CurrentJobs", new { page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            },
+            new AjaxOptions() { HttpMethod = "GET", OnComplete = "Rating('.difficulty')", UpdateTargetId = "CompleteJobs" }))
+}
+else
+{
+    <h3 style="margin: 0 auto; margin-top: 20px;">No Active Jobs Available</h3>
+}
+

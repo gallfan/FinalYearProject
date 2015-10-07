@@ -1,0 +1,9 @@
+﻿@model Int16
+
+@{
+    var hours = Math.Floor((double)Model / 60);
+    var minutes = Math.Floor(((double)Model % 60));
+
+    var time = string.Format("{0}{1}", hours==0.0?null:hours+" hr ", minutes==0.0?null:minutes+" min");
+    <span>@time</span>
+}

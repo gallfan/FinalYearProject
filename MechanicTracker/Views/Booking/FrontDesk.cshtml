@@ -1,0 +1,236 @@
+﻿@model IEnumerable<MechanicTracker.booking>
+@*@model PagedList.IPagedList<MechanicTracker.booking>
+@using PagedList.Mvc;*@
+@{
+    ViewBag.Title = "FrontDesk";
+}
+
+    <div class="row col-md-7" style="margin-top:70px">
+    <label id="labelheader">Front Desk Bookings</label>
+    
+    <span class="btn btn-xs btn-danger" onclick="showCreateBooking()">Add Booking</span>
+        <div>
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.car.Registration)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.car.model.make.MakeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.car.model.ModelName)
+                    </th>
+                    <th>
+                        Select Booking
+                    </th>
+                </tr>
+
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.car.Registration)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.car.model.make.MakeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.car.model.ModelName)
+                    </td>
+                    <td>
+                        <span class="btn btn-xs btn-danger" onclick="showDetails('@item.BookingID')">Edit Booking</span>
+                    </td>
+                </tr>
+            } 
+
+            </table>
+</div><!--/Row-->  
+
+        </div><!-- /col6--->
+        <!-- Partial View -->
+        <div class="col-md-4" id="partialcontainer" hidden="hidden" style="margin-top:74px;">
+        <div id="details"></div>
+        <div id`="createBooking"></div>
+    
+</div><!-- /partialcontainer -->
+
+        
+
+
+
+<script>
+    //Call Partial View of Booking
+    function showDetails(BookingID) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("FrontDeskEditBooking")',
+            data: { id: BookingID },
+            success: function (data) {
+             $('#partialcontainer').fadeIn("slow");
+             $('#details').hide();
+             $('#details').html(data);
+             $('#details').fadeIn("slow");
+        },
+        error: function (data) {
+            $('#details').html('<h3>Error in booking retreival</h3>');
+            }
+        });
+
+    }
+
+//Dropdown list for Make-Model of car
+    function selectMake(MakeID) {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("getMake")',
+            data: { id: MakeID },
+            success: function (data) {
+                $('#updatecarmodel').html(data);
+                $('#updatecarmodel').fadeIn("1");
+            },
+            error: function (data) {
+                $('#updatecarmodel').html('<h3>Error in retrieval</h3>');
+            }
+        });
+    }
+
+ //Submit booking of edit booking
+    function submitBooking() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("FrontDeskEditBooking")',
+            data: { id: BookingID },
+            success: function (data) {
+                $('#partialcontainer').fadeIn("slow");
+                $('#details').hide();
+                $('#details').html(data);
+                $('#details').fadeIn("slow");
+            },
+            error: function (data) {
+                $('#details').html('<h3>Error in booking retreival</h3>');
+            }
+        });
+
+    }
+
+// Show Create Booking
+    function showCreateBooking() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("CreateBooking")',
+            
+            success: function (data) {
+                $('#partialcontainer').fadeIn("slow");
+                $('#details').hide();
+                $('#details').html(data);
+                $('#details').fadeIn("slow");
+            },
+            error: function (data) {
+                $('#createBooking').html('<h3>Error in booking retreival</h3>');
+            }
+        });
+
+    }
+
+// Submit Create Booking
+    function Createbooking() {
+        $('#CreateNewBooking').submit(function () {
+            $.ajax({
+                url: '@Url.Action("CreateBooking")',
+                type: "POST",
+                data: $(this).serialize(),
+                success: function () {
+                    alert("Job Added");
+                },
+                error: function (data) {
+                    alert("Job Added");
+                }
+            });
+
+        });
+    }
+
+
+
+
+
+
+// CLEAR form of CREATE booking
+    function clearCreateBooking() {
+        $("#form").val("");
+    }
+    
+    // Search Database from search bar, compare in _CreateBooking controlller Method 1
+    $(document).ready(function () {
+        $("#searchTerm").autocomplete("/Booking/getAjaxResult/");
+    });
+
+
+    // Search Database from search bar, compare in _CreateBooking controlller Method 2
+    $(document).ready(function () {
+        $("#regSearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "CreateBooking",
+                    data: "{'Reg':'" + document.getElementById('txtSearch').value + "'}",
+                    dataType: "json",
+                    success: function (data) {
+                        response(data.d);
+                    },
+                    error: function (result) {
+                        alert("Error......");
+                    }
+                });
+            }
+        });
+    });
+
+ @*//Submit and Post Create Booking
+    $('#CreateNewBooking').submit(function() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CreateBooking")',
+            data: $(this).serialize(), // serialize the input controls for this form '#CreateNewBooking'
+            success: function() {
+            }
+        });
+    }*@
+    
+    @* // Create booking
+    function createBooking() {
+        
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("_CreateBooking")',
+            data: $(this).serialize(),
+            success: function () {
+                $('#details').hide();
+                $('#partialcontainer').fadeIn("slow");
+                $('#createBooking').fadeIn("slow");
+            },
+            error: function (data) {
+                $('#createBooking').html('<h3>Error</h3>');
+            }
+        });
+
+    }*@
+
+//function showDetails(BookingID) {
+    //    alert("Success");
+    //}
+
+
+</script>
+
+
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+
+ @*<p>@Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-danger" })</p>*@  
+
+@*<span class="btn btn-xs btn-danger" onclick="showCreateBooking()">Add Booking</span>*@

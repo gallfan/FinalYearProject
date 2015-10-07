@@ -1,0 +1,42 @@
+﻿@model  IEnumerable<MechanicTracker.job>
+@{
+    ViewBag.Title = "ActiveJobs";
+    Layout = "~/Views/Shared/_Layout_Mobile.cshtml";
+}
+
+<div class="col-xs-12">
+    <h3 class="text-center">Active Jobs</h3>
+    <div style="overflow: scroll hidden;">
+
+        <div id="summaryDisplay">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                <div style="border-radius: 10px; border-style: solid; border-width: 2px; margin-top: 2%;">
+                    <p class="text-center"><b>Job Name</b> </p>
+                    <p class="text-center">@item.jobslist.Name</p>
+                    <br />
+                    <p class="text-center"><b>Job Description</b></p>
+                    <p class="text-center">@item.jobslist.Description</p>
+                    <br />
+                    <div class="col-md-4 text-center" style="margin-bottom: 10px;">
+                        @Html.ActionLink("Select Job", "JobMenu",
+                    new { id = @item.JobID }, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">No Active Jobs</p>
+            }
+        </div>
+    </div>
+
+</div>
+
+<div class="col-xs-12" style="margin-top: 10%; width: 100%;">
+    @Html.ActionLink("Back to Home", "Index",
+    null, new { @class = "btn btn-danger", @style = "width:100%;" })<br />
+</div>

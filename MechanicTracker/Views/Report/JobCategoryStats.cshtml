@@ -1,0 +1,131 @@
+﻿@using MechanicTracker
+@{
+    ViewBag.Title = "Job Category Stats";
+}
+
+<div class="row" style="margin-top: 70px;">
+    <div class="col-md-3">
+        <h3>Category Stats</h3>
+    </div>
+    <div class="col-md-3" style="margin-top: 22px;">
+        <label>Choose Category:</label>
+        @Html.DropDownList("JobsCategoryID", new SelectList(ViewBag.CategoryList, "ID", "Type"), new { @onchange = "CategoryStats(this.value)" })
+    </div>
+</div>
+<hr />
+<div class="row" style="margin-top: 5px;">
+    <div class="col-md-4">
+        <h3>Category Details</h3>
+        <div id="Details"></div>
+    </div>
+    <div class="col-md-8">
+        <h3>Monthly Jobs</h3>
+        <div id="LineChart" style="height: 300px;"></div>
+    </div>
+</div>
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-7">
+        <h3>Category Job List</h3>
+        <div id="ColumnChart" style="height: 400px;"></div>
+    </div>
+    <div class="col-md-5">
+        <h3>Job Time Status</h3>
+        <div id="PieChart" style="height: 400px;"></div>
+    </div>
+</div>
+<div class="row">
+    
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            CategoryStats($("select[name=JobsCategoryID]").val());
+        });
+
+        function CategoryStats(CategoryId) {
+            $("#JobsCategoryID").addClass("disabled").attr("disabled", "disabled");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("JobCategoryDetails")',
+                data: { id: CategoryId },
+                success: function (data) {
+                    $("#Details").hide();
+                    $("#Details").html(data);
+                    $("#Details").fadeIn(1000);
+                },
+                error: function () {
+                    $("#Details").hide();
+                    $("#Details").html("<p>Error retrieving Mechanic Details</p>")
+                    $("#Details").fadeIn(1000);
+                },
+                complete: function () {
+                    $.when(RetrieveJSON(CategoryId, '@Url.Action("CategoryTimeStats")', PieChart, "#PieChart", "Category Jobs Time Taken", "Category Job Time"))
+                        .then(RetrieveJSON(CategoryId, '@Url.Action("CategoryJobListJobs")', Column, "#ColumnChart", "Category Jobs Count", "No. of Jobs"))
+                        .then(RetrieveJSON(CategoryId, '@Url.Action("CategoryJobsMonth")', LineChart, '#LineChart', 'Monthly Jobs', 'Number of Jobs'));
+                    $("#JobsCategoryID").removeAttr("disabled").removeClass("disabled");
+                }
+            });
+        }
+
+        function Column(data, ele, name) {
+            var Group = new Array();
+            var Complete = new Array();
+            var Incomplete = new Array();
+            for (var i = 0; i < data.length; i++) {
+                Group.push(data[i].Group);
+                Complete.push(data[i].Count[0]);
+                Incomplete.push(data[i].Count[1]);
+            }
+            $(ele).highcharts({
+                colors: ["rgba(33,150,243,.8)", "rgba(255,153,0,.8)"],
+                chart: {
+                    type: 'column',
+                    margin: 75,
+                    options3d: {
+                        enabled: true,
+                        alpha: 10,
+                        beta: 25,
+                        depth: 70
+                    }
+                },
+                title: {
+                    text: ""
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        depth: 25,
+                        events: {
+                            legendItemClick: function () {
+                                return false;
+                            }
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: Group,
+                },
+                yAxis: {
+                    opposite: false,
+                    title: {
+                        text: "Number of Jobs",
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size: 14px"><b>{point.x}</b></span><br/>',
+                    pointFormat: 'Number: <b>{point.y}</b><br/>Percentage: <b>{point.percentage:.1f}%</b>',
+                },
+                series: [{
+                    name: 'Incomplete',
+                    data: Incomplete
+                }, {
+
+                    name: 'Complete',
+                    data: Complete
+                }]
+            });
+        }
+    </script>
+}

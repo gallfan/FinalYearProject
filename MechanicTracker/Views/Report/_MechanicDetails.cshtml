@@ -1,0 +1,48 @@
+﻿@model MechanicTracker.mechanic
+
+@if (Model != null)
+{
+    <div class="row">
+        <label class="col-md-6">Name:</label>
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.Firstname, "_Capitalize") @Html.DisplayFor(model => model.LastName, "_Capitalize")
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">@Html.DisplayNameFor(model => model.PhoneNumber):</label>
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">@Html.DisplayNameFor(model => model.Email):</label>
+        <div class="col-md-6">
+            @Html.DisplayFor(model => model.Email)
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">@Html.DisplayNameFor(model => model.SkillLevel):</label>
+        <div class="col-md-6">
+            <input type="hidden" class="rating" readonly="readonly" value="@Model.SkillLevel"/>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">Jobs Completed:</label>
+        <div class="col-md-6">
+            @ViewBag.NumberofJobsComplete
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-6">Completed on Time:</label>
+        <div class="col-md-6">
+            @ViewBag.NumberofJobsCompleteOnTime
+        </div>
+    </div>
+
+}
+else
+{
+    <p>A problem has occured when loading the Mechanic Details</p>
+}
+
+

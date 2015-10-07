@@ -1,0 +1,619 @@
+﻿
+    @media (min-width: 768px) {
+  .navbar {
+        position: fixed;
+        width: 100%;
+        border-radius:0px;
+        z-index: 1;
+        -webkit-box-shadow: 0px 9px 10px 0px rgba(157, 157, 157, 0.69);
+        -moz-box-shadow:    0px 9px 10px 0px rgba(157, 157, 157, 0.69);
+        box-shadow:         0px 9px 10px 0px rgba(157, 157, 157, 0.69);
+    }
+}
+.labelError {
+    color:red;
+}
+body {
+    background-color:#222;
+}
+
+a {
+    color: #ddd;
+    text-decoration: none;
+}
+textarea {
+    color: #222;
+}
+#logoutForm li {
+    text-decoration:none;
+    background:#ddd;
+}
+
+
+::selection {
+  background: #eb5d14; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: #ffb7b7; /* Gecko Browsers */
+}
+
+.element::-webkit-scrollbar {
+     width: 0 !important; 
+
+}
+/*:active, :checked, :default, :enabled, :focus, :hover, :optional {
+    background: green;
+}*/
+
+/*:focus {
+    background: #eb5d14;
+}
+
+select option:hover
+    {
+        color: #1B517E;
+        cursor:crosshair;
+    }*/
+
+/*Login*/
+
+#login img {
+
+    width:100%;
+}
+
+#login .btn-primary {
+    color: #fff;
+    background-color:#eb5d14;
+    border-color: #eb5d14;
+}
+
+#login h2 {
+    text-align:center;
+    color : white;
+}
+
+#login h6 {
+    color : white;
+    margin-top: 20px;
+}
+
+#login input {
+    margin-top: 20px;
+}
+
+#login .form-control:focus {
+    border-color: #eb5d14;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.validation-summary-errors {
+    color: #ddd;
+}
+
+/*Render Body*/
+
+#RenderBody {
+    background: #222;
+    color: #ddd;
+}
+
+.input {
+    background: #333;
+}
+
+
+#legend {
+    color: #9d9d9d;
+}
+
+/*********************************************
+ **************** All ************************
+ *********************************************/
+ #errorpage h1, h2 {
+    color:#ddd;
+}
+/*NAV*/
+
+.navbar-inverse {
+    background-color: #222;
+    border-color: #222;
+}
+.navbar-toggle {
+    height: 35px;
+}
+.top-nav>li {
+    color: #ddd;
+    background-color:#222;
+}
+
+.top-nav>li>a:hover {
+    line-height: 20px;
+    color: #ddd;
+    background-color:#222;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: #222;
+    border-color: #333;
+}
+
+.top-nav>.open>.dropdown-menu {
+    float: left;
+    position: absolute;
+    margin-top: -5px;
+    margin-right:-5px;
+    border: 0px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color:#ddd;
+    background-color: rgba(0,0,0,0);
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 0px 0px rgba(0,0,0,.175);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #222;
+    -webkit-background-clip: padding-box;
+    /*background-clip: padding-box;*/
+    border: 0px solid #222;
+    border-radius: 0px;
+    -webkit-box-shadow: 0 0px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, .175);
+}
+.dropdown-menu > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #ddd;
+    white-space: nowrap;
+}
+
+.side-nav li a:hover, .side-nav li a:focus {
+    outline: none;
+    background-color: #222 !important;
+}
+.side-nav>li>ul>li>a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #9d9d9d;
+    background: #222;
+    width: 220px;
+    }
+
+.side-nav>li>ul>li>a:hover {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #ddd;
+    background: #222;
+    width: 220px;
+    }
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #222;
+}
+/*BUTTONS*/
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color:#eb5d14;
+    border-color: #EF7D43;
+}
+
+.btn-danger:hover {
+    color: #fff;
+    background-color:#EF7D43;
+    border-color: #eb5d14;
+}
+
+.btn-danger, btn-xs:enabled ::selection{
+    color: #fff;
+    background-color:#eb5d14;
+    border-color: #EF7D43;
+}
+.btn-danger, btn-xs:enabled :checked{
+    color: #fff;
+    background-color:#eb5d14;
+    border-color: #EF7D43;
+}
+
+.btn-xs, .btn-group-xs > .btn {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    width:110px;
+}
+
+.btn-start {
+color: #222;
+background-color:#00CC00;
+border-color: #4DDB4D;
+}
+
+.btn-start:hover {
+color: #222;
+background-color:#4DDB4D;
+border-color: #00CC00;
+}
+
+.btn-stop {
+color: #222;
+background-color:#FF3333;
+border-color: #FF6666;
+}
+
+.btn-stop:hover {
+color: #222;
+background-color:#FF6666;
+border-color: #FF3333;
+}
+
+.btn-pause {
+color: #222;
+background-color:#FFD119;
+border-color: #FFDF5E;
+}
+
+.btn-pause:hover {
+color: #222;
+background-color:#FFDF5E;
+border-color: #FFD119;
+}
+
+.btn-complete {
+color: #222;
+background-color:#E6E6E6;
+border-color: #FFFFFF;
+}
+
+.btn-complete:hover {
+color: #222;
+background-color:#FFFFFF;
+border-color: #E6E6E6;
+}
+
+#CreateMechanicButton {
+    margin-top:5px;
+    margin-left:10px;
+}
+/*glyphicons + Font Awesome*/
+
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-weight: 900;
+    line-height: 1;
+    color: green;
+    -webkit-font-smoothing: antialiased;
+}
+.glyphicon-wrench {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1;
+    color: rgb(166, 164, 164);
+    -webkit-font-smoothing: antialiased;
+}
+.glyphicon-star {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1;
+    color: rgb(182, 144, 44);
+    -webkit-font-smoothing: antialiased;
+}
+.glyphicon-refresh {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: italic;
+    font-weight: 900;
+    line-height: 1;
+    color: rgb(237, 93, 19);
+    -webkit-font-smoothing: antialiased;
+}
+
+.element.style {
+    color: #CAB90C;
+    background-color: transparent;
+}
+
+.glyphicon-exclamation-sign {
+    color: #CAB90C;
+    background-color: transparent;
+}
+
+.fa {
+    display: inline-block;
+
+    font: normal normal normal 14px/1 FontAwesome;
+    margin-top: 5px;
+    font-size: 18px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-star, .glyphicon-star-empty {
+    color:yellow;
+    font-style: normal;
+    margin-right:3px;
+    font-size:16px;
+    font-weight: 100;
+}
+
+.glyphicon-asterisk {
+    color: #222;
+    font-style: normal;
+    margin-right: 3px;
+    font-size: 16px;
+    font-weight: 100;
+}
+/*INPUT*/
+.input-container {
+    width:197px;
+    height:28px;
+    margin-top:4px;
+}
+.input-container input{
+    height:28px;
+    line-height:28px;/*results in nice text vertical alignment*/
+    border:none;
+    background:#ddd;
+    padding:0 10px;/*don't start input text directly from the edge*/
+    width:180px;/*full width - grey on the side - 2*10px padding*/
+    color:black;
+}
+
+.forms {
+    margin-top:8px;
+}
+
+
+/*PAGINATION*/
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #222;
+    border-color: #ddd;
+}
+.pagination > li > a, .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #222;
+    border: 1px solid #ddd;
+}
+
+.pagination > li > a, .pagination > li > span:enabled{
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #ddd;
+    text-decoration: none;
+    background-color: #222;
+    border: 1px solid #ddd;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #eb5d14;
+    border-color: #337ab7;
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+    color: #ddd;
+    background-color: #EF7D43;
+    border-color: #ddd;
+}
+
+a:hover, a:focus {
+    color: white;
+    text-decoration: none;
+}
+
+/*Custom Check Box*/
+/*** custom checkboxes ***/
+
+
+/*input[type=checkbox] + label:before {
+  font-family:
+  color:red;
+}*/
+
+input[type=checkbox] + label:before { content: "\f096"; } /* unchecked icon */
+
+input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked icon */
+
+table {
+    color:#ddd;
+}
+/*********************************************
+ **************** Bookings *******************
+ *********************************************/
+
+#partialcontainer {
+    margin-top:-10px;
+}
+
+/*********************************************
+ **************** Jobs ***********************
+ *********************************************/
+#dropDownMechanics {
+    margin-left:40px;
+}
+
+button, select {
+    text-transform: none;
+    background: #eb5d14;
+    height: 20px;
+    border-radius: 5px;
+    color: white;
+}
+
+
+button, option {
+    background:#eb5d14;
+}
+select, option:checked:after {
+    background: #eb5d14;
+    color: #fff;
+    border: none;
+}
+
+#joblist {
+    background:#222;
+}
+#labelheader {
+    font-size:25px;
+    font-weight:100;
+    color: #ddd;
+    
+}
+.labelheader {
+    font-size:25px;
+    font-weight:100;
+    color: #ddd;
+    margin-left:15px;
+}
+
+
+/*********************************************
+ **************** Mechanics ******************
+ *********************************************/
+#mechsList {
+margin-left:30px;
+}
+
+#mechDetails {
+    margin-top:40px;
+}
+
+legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 25px;
+    line-height: inherit;
+    color: #DDD;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#carReg, input {
+    color:#222;
+    width:100%;
+}
+/*********************************************
+ **************** Reports** ******************
+ *********************************************/
+
+
+.highcharts-background {
+    fill: #222;
+}
+
+
+/*********************************************
+ **************** Home ********************
+ *********************************************/
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    color: #ddd;
+}
+
+.nav-tabs > li > a:hover {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    color: #ddd;
+    background-color:#333;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #ddd;
+    cursor: default;
+    background-color: #222;
+    border: 1px solid #444;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #333;
+}
+
+/*********************************************
+ **************** Jobs ***********************
+ *********************************************/
+
+label {
+    font-weight:bold;
+}
+
+.disabled {
+    background:#8a8a8a;
+}

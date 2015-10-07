@@ -1,0 +1,276 @@
+﻿@model IPagedList<MechanicTracker.mechanic>
+
+@{
+    ViewBag.Title = "Mechanics";
+}
+
+
+<div style="margin-top: 70px; margin-left: -40px" class="row">
+    <div class="col-md-7" id="mechsList">
+        <div class="row">
+            <div class="col-md-12">
+                <label id="labelheader" class="pull-left">Mechanics</label>
+                <span class="btn btn-danger btn-xs" onclick="createMechanic()" id="CreateMechanicButton">Create Mechanic</span>
+            </div>
+            @*<div class="col-md-5">
+                <span class="btn btn-danger btn-xs" onclick="createMechanic()" style="margin-top: 12px;">Create Mechanic</span>
+            </div>*@
+
+        </div>
+
+        <div id="mechtable">
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().Firstname)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().SkillLevel)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Firstname, "_Capitalize")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName, "_Capitalize")
+                        </td>
+                        <td>
+                            @for (int i = 0; i < item.SkillLevel; i++)
+                            {
+                                <span class="glyphicon glyphicon-star"></span>
+                            }
+                            @* @Html.DisplayFor(modelItem => item.SkillLevel)*@
+                        </td>
+
+                        <td>
+                            <span class ="btn btn-danger btn-xs" onclick="getMechDetails(@item.MechanicID)">Mechanic Details</span>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <div class="pagedList" data-otf-target="bookingsList">
+            @Html.PagedListPager(Model, Page => Url.Action("Mechanics", new { Page }),
+          new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            })
+        </div>
+    </div>
+
+    <div id="mechDetails" class="col-md-4" style="margin-top: 2px;"></div>
+
+</div>
+
+@section scripts{
+    <script>
+        function checkpassEqual(pass1, pass2) {//check if the password are equal
+            if ($('#password').val() != '') {
+
+                if (pass1 != pass2) {//if password equal show error lable
+                    $('#passloabel2').css('color', 'red');
+                    $('#passloabel2').html("Passwords  don't match");
+                    $('#btnclick').prop("disabled", true);
+                }
+                else {//if ok show green label
+                    $('#passloabel2').css('color', 'green');
+                    $('#passloabel2').html("Password Match");
+                    $('#btnclick').prop("disabled", false);
+                }
+            }
+            else {// passwords field cannot be null
+                $('#passloabel2').css('color', 'red');
+                $('#passloabel2').html("Password  cant be empty");
+                $('#btnclick').prop("disabled", true);
+            }
+
+        }
+
+        function checkvalidation() {// check validation
+
+            if ($('#password').is(':empty')) {
+                $('#passloabel').html("Password  is Required");
+                $('#passloabel').css('color', 'red');
+                $('#passloabel2').html("Password  is Required");
+                $('#passloabel2').css('color', 'red');
+            }
+            if ($("#password").val() != "") {
+
+                if ($('#createMechanic').valid()) {
+                    $('#createMechanic').submit(function () {
+                        // create mechanic if forms passes all validation
+                        $('#btnclick').prop("disabled", true);// disable button
+                        $('#createMechanic').hide();
+                        $('#progressform').show();
+                        $.ajax({
+                            url: '@Url.Action("CreateMechanic")',
+                            type: "POST",
+                            data: $('#createMechanic').serialize(),
+                            success: function () {
+                                createUser($('#username').val(), $('#password').val());
+                                setTimeout(function () { toastr.success('Success', 'Mechanic Added to System'); }, 300);
+                                setTimeout(function () { $('#progressform').hide(); }, 300);
+                            }
+                        });
+                        return false;
+
+                    })
+                }
+            }
+
+        }
+
+
+
+
+        function createUser(username, password) {//create user logins for mechanic
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Register", "Account")',
+                data: { username: username, password: password },
+                success: function (data) {
+                    getMechList();
+                },
+                error: function (data) {
+                    $('#mechDetails').html('<h3>Error in retrieval</h3>');
+                }
+            });
+        }
+
+        function getMechDetails(MechanicID) {//single details about mechanic
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("mechDetails")',
+                data: { id: MechanicID },
+                success: function (data) {
+                    $('#mechDetails').html(data);
+                    $('#mechDetails').fadeIn("slow");
+                },
+                error: function (data) {
+                    $('#mechDetails').html('<h3>Error in retrieval</h3>');
+                }
+            });
+        }
+        function editMechDetails(MechanicID) {//call partial view for edit form
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("editMechanicsForm")',
+                data: { id: MechanicID },
+                success: function (data) {
+                    $('#mechDetails').html(data);
+                    $('#mechDetails').fadeIn("slow");
+                },
+                error: function (data) {
+                    $('#mechDetails').html('<h3>Error in retrieval</h3>');
+                }
+            });
+        }
+
+
+
+
+        function createMechanic() {//call create mechanic form
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("createmechanicsform")',
+                success: function (data) {
+                    $('#mechDetails').html(data);
+                    $('#mechDetails').fadeIn("slow");
+                },
+                error: function (data) {
+                    $('#mechDetails').html('<h3>Error in retrieval</h3>');
+                }
+            });
+        }
+
+        function getMechList() {//get list of mechanics
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Mechanics")',
+                success: function (data) {
+                    $('#mechtable').html(data);
+                    $('#mechtable').fadeIn("slow");
+                },
+                error: function (data) {
+                    $('#mechtable').html('<h3>Error in retrieval</h3>');
+                }
+            });
+        }
+
+
+
+        function checkuname(username) {//check if username exists in the database
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ChkUserName")',
+                data: { username: username },
+                success: function (data) {
+                    $('#uservali').append("Username already exists");
+                    $('#btnclick').prop("disabled", true);
+                },
+                error: function (data) {
+                    $('#uservali').append("<b>Username is Ok</b>");
+                    $('#uservali').css('color', 'green');
+                    $('#btnclick').prop("disabled", false);
+
+
+                }
+            });
+
+        }
+
+
+
+
+
+        //edit mechanic and alert user if successful
+        function editMech() {
+            $('#EditMechanic').hide();
+            $('#progressform').fadeIn();
+            $('#EditMechanic').submit(function () {
+                $.ajax({
+                    url: '@Url.Action("EditMechanic")',
+                type: "POST",
+                data: $(this).serialize(),
+                success: function () {
+
+                    setTimeout(function () { toastr.success('Success', 'Mechanic Mechanic Details Edited'); }, 300);
+                    setTimeout(function () { $('#mechDetails').hide(); }, 300);
+                    getMechList();
+                }
+            });
+            return false;
+
+        });
+    }
+
+
+
+
+
+
+
+
+    </script>
+}

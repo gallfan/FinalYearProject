@@ -1,0 +1,140 @@
+﻿@model MechanicTracker.booking
+@using MechanicTracker.Models;
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@using (Html.BeginForm(null, null, FormMethod.Get, new { id = "CreateNewBooking" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Create Booking</legend>
+
+        <form id="CreateNewBooking">
+            @Html.HiddenFor(model => model.BookingID)
+            <!-- REGISTRATION -->
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">@Html.LabelFor(model => model.car.Registration)</label>
+                    <div class="col-md-8">
+                        <input type="hidden" name="">@Html.EditorFor(model => model.car.Registration)@Html.ValidationMessageFor(model => model.car.Registration)
+                    </div>
+                </div>
+            </div>
+            <!-- CAR MAKE -->
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">@Html.LabelFor(model => model.car.model.make.MakeName)</label>
+                    <div class="col-md-8">
+                        <select id="carMake" style="width: 100px" onchange="selectMake(value)">
+                            <option>Select</option>
+                                @foreach (MechanicTracker.make cm in @ViewBag.makes)
+                                {
+                                    <option value="@cm.MakeID">@cm.MakeName</option>
+                                }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- CAR MODEL -->
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">@Html.LabelFor(model => model.car.model.ModelName)</label>
+                    <div class="col-md-8">
+                        <select id="updatecarmodel" style="width: 100px">
+                        <option>Select</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- FUEL TYPE -->
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">@Html.LabelFor(model => model.car.model.make.MakeName)</label>
+                    <div class="col-md-8">
+                        <select>
+                            @foreach (MechanicTracker.car ft in @ViewBag.FuelType)
+                            {
+                                <option value="@ft.CarID">@ft.FuelType</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            @*<div class="row">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">@Html.LabelFor(model => model.Description)</label>
+                    <div class="col-md-8">
+                        <input type="hidden">@Html.EditorFor(model => model.Description, new { cols = 35, @rows = 3 })
+                    </div>
+                </div>
+            </div>*@
+            <!-- ACTION -->
+            <div class="row">
+                <div class="form-group col-md-offset-4">
+                    <input class="btn btn-xs btn-danger control-label" type="reset" value="Clear" />
+                    
+                        <input type="submit" onclick="Createbooking()" class="btn btn-xs btn-danger" />
+                    
+                </div>
+            </div>
+        </form>
+    </fieldset>
+}
+
+
+@*  
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+*
+
+          @Html.DropDownList("BookingID", new SelectList(ViewBag.FuelType, "BookingID", "FuelType"), new{@class="form-control"})*@
+
+
+@*<label>@Html.LabelFor(model => model.car.Registration)</label>
+            <input type="hidden" name="">@Html.EditorFor(model => model.car.Registration)@Html.ValidationMessageFor(model => model.car.Registration)<br />
+
+
+            <!-- CAR MAKE -->
+            <label>@Html.LabelFor(model => model.car.model.make.MakeName)</label>
+            <select id="carMake" style="width: 100px" onchange="selectMake(value)">
+                <option>Select</option>
+                @foreach (MechanicTracker.make cm in @ViewBag.makes)
+                {
+                    <option value="@cm.MakeID">@cm.MakeName</option>
+                }
+            </select>
+            <br />
+
+
+            <!-- CAR MODEL -->
+            <label>@Html.LabelFor(model => model.car.model.ModelName)</label>
+            <select id="updatecarmodel" style="width: 100px">
+                <option>Select</option>
+            </select>
+            <br />
+
+
+            <!-- FUEL TYPE -->
+            <label>@Html.LabelFor(model => model.car.FuelType)</label>
+            <select>
+                @foreach (MechanicTracker.car ft in @ViewBag.FuelType)
+                {
+                    <option value="@ft.CarID">@ft.FuelType</option>
+                }
+            </select>
+            <br />
+
+
+            <!-- DESCRIPTION -->
+            <label>@Html.LabelFor(model => model.Description)</label>
+            <input type="hidden">@Html.EditorFor(model => model.Description, new { cols = 35, @rows = 3 })<br />
+
+            <!-- ACTION -->
+            <input class="btn btn-xs btn-danger" type="reset" value="Clear" />
+            <span class="btn btn-xs btn-danger" onclick="Createbooking()">Create Booking</span>
+            <input type="submit" onclick="Createbooking()" class="btn btn-xs btn-danger" />*@

@@ -1,0 +1,15 @@
+﻿@model MechanicTracker.make
+
+﻿@{
+    ViewBag.Title = "getjobsFordropdown";
+}
+
+<h2>CarMake</h2>
+@using MechanicTracker
+<select style="width:100px" >
+            <option>Select</option>
+            @foreach (make cm in @ViewBag.dllCarMake)
+            {
+               <option value="@cm.MakeID">@cm.MakeName</option>
+            }
+</select>

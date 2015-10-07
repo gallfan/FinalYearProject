@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Welcome to the Mechanic Tracker App";
+}
+
+<div class="row" style="margin-top: 70px;">
+    <div id="tab-container" class="tab-container">
+        <ul class='nav nav-tabs'>
+            <li class='tab'><a href="#NewBookings-tab" onclick="NewBookings()"><i class="fa fa-fw fa-book"></i>New Bookings</a></li>
+            <li class='tab'><a href="#NewCompletedJobs-tab" onclick="RecentlyCompeteJobs()"><i class="fa fa-fw fa-check-square"></i>Recent Completed Jobs</a></li>
+            <li class='tab'><a href="#ActiveJobs-tab" onclick="ActiveJobs()"><i class="fa fa-fw fa-play"></i>Active Jobs</a></li>
+        </ul><!--.nav nav-tabs-->
+        <div class="col-md-10" id="NewBookings-tab">
+            <div id="NewBookings">@Html.Action("RecentBookings")</div>
+        </div><!--NewBookings-tab-->
+
+        <div class="col-md-10" id="NewCompletedJobs-tab">
+            <div class="row" style="margin: 20px 0;">
+                <label>Filter:</label>
+                <select onchange="RecentlyCompeteJobs(this.value)" id="Filter">
+                    <option value="All">All</option>
+                    <option value="OnTime">On Time</option>
+                    <option value="OverRun">Over Run</option>
+                </select>
+            </div>
+            <div id="CompleteJobs"></div>
+        </div><!--NewCompletedJobs-tab-->
+
+        <div class="col-md-10" id="ActiveJobs-tab">
+            <div id="CurrentJobs"></div>
+        </div><!--ActiveJobs-tab-->
+    </div><!--tab-container-->
+</div><!--.container-->
+
+@section scripts{
+    <script>
+        $(function () {
+            //Tabs Jquery
+            $('#tab-container').easytabs({
+                panelActiveClass: "active",
+                cache: false,
+                panelClass: "tab-pane",
+                updateHash: false,
+                animate: true,
+                animationSpeed: 500,
+                transitionOut: "slideUp",
+                transitionIn: "slideDown"
+            });
+
+            //Toaster of UserName
+            toastr.options.closeButton = true;
+            toastr.options.progressBar = true;
+            toastr.info("Welcome To MechanicTracker's Dashboard, @User.Identity.Name")
+        });
+
+        function NewBookings() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("RecentBookings")",
+                success: function (data) {
+                    $("#NewBookings").html(data);
+                }
+            });
+        }
+
+        //Get all the active jobs
+        function ActiveJobs() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("ActiveJobs")",
+                success: function (data) {
+                    $("#CurrentJobs").html(data);
+                    Rating($(".difficulty"));
+                }
+            });
+        }
+
+        //Get the Recently Complete Jobs Depending on the filter selected
+        function RecentlyCompeteJobs(Filter) {
+            $("#Filter").addClass("disabled").attr("disabled", "disabled");
+            //if the filter is undefined set it to the selected value of the select list
+            if (Filter == undefined) {
+                Filter = $("#Filter option:selected").val();
+            }
+            $.ajax({
+                type: "GET",
+                data: { filter: Filter },
+                url: "@Url.Action("RecentCompletedJobs")",
+                success: function (data) {
+                    $("#CompleteJobs").html(data);
+                    Rating($(".difficulty"));
+                },
+                complete: function () {
+                    $("#Filter").removeAttr("disabled").removeClass("disabled");
+                }
+            });
+        }
+
+        function Rating(ele) {
+            //Using Bootstrap Rating
+            $(ele).rating({
+                filled: 'glyphicon glyphicon-wrench',
+                empty: ''
+            });
+        }
+    </script>
+}

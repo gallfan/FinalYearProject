@@ -1,0 +1,163 @@
+﻿@model MechanicTracker.job
+
+@{
+    Layout = "~/Views/Shared/_Layout_Mobile.cshtml";
+}
+<div class="container">
+    <div id="buttons">
+        @if(Model.Status!="active")
+      {
+        <h3 class="text-center">Description </h3>
+        <p class="text-center">@ViewBag.JobName</p>
+        <div class="col-xs-12">
+            <h3 class="text-center" id="timeStart" hidden="hidden">S</h3>
+        </div>
+       
+        <div class="col-xs-6">
+            <button id="startTime" onclick="StartTime('@Html.DisplayFor(model => model.JobID)')" class="btn btn-start" style="height:80px;width:100%"><i class="fa fa-play"></i><br /><b>Start Job</b></button>
+        </div>
+        <div class="col-xs-6">
+            <button onclick="EndTime($(this).attr('value'), '@Html.DisplayFor(model => model.JobID)', 'pause')" disabled id="pauseTime" class="btn btn-stop" style="height:80px;width:100%"><i class="fa fa-pause"></i><br /><b>Pause Job</b></button>
+        </div>
+        <div class="col-xs-12" style="margin-top: 20px;">
+            <button onclick="EndTime($(this).attr('value'), '@Html.DisplayFor(model => model.JobID)', 'complete')" disabled id="endTime" value="" class="btn btn-complete" style="width:100%;height:80px;margin-top:10px;"><i class="fa fa-forward"></i><br /><b>Job Complete</b></button>
+        </div>
+        }
+        else
+        {
+            <h3 class="text-center">Description </h3>
+            <p class="text-center">@ViewBag.JobName</p>
+            <div class="col-xs-12">
+                <h3 class="text-center" id="timeStart" >Start Time : @ViewBag.Time</h3>
+            </div>
+
+            <div class="col-xs-6">
+                <button id="startTime" onclick="StartTime('@Html.DisplayFor(model => model.JobID)')" class="btn btn-start" style="height:80px;width:100%" disabled><b>Start Job</b></button>
+            </div>
+            <div class="col-xs-6">
+                <button onclick="EndTime('@ViewBag.TimeSheetId', '@Html.DisplayFor(model => model.JobID)', 'pause')" id="pauseTime" class="btn btn-stop" style="height:80px;width:100%"><b>Pause Job</b></button>
+            </div>
+            <div class="col-xs-12" style="margin-top: 20px;">
+                <button onclick="EndTime('@ViewBag.TimeSheetId', '@Html.DisplayFor(model => model.JobID)', 'complete')" id="endTime" value="" class="btn btn-complete" style="width:100%;height:80px;margin-top:10px;"><b>Job Complete</b></button>
+            </div>
+        }
+        <div class="col-xs-12" style="margin-top: 20px;">
+            @Html.ActionLink("Back to Home", "Index",
+    null, new { @class = "btn btn-danger", @style = "width:100%" })
+        </div>
+
+
+
+    </div>
+    <form id="mechanicComment" style="margin-top: 100px" hidden="hidden"></form>
+</div>
+
+
+@* <h3 id="timeStart" hidden="hidden">S</h3>
+
+        <button onclick="StartTime('@Html.DisplayFor(model=>model.JobID)')" class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Start Job</b></button>
+
+        @Html.ActionLink("Back to Home", "Index",
+        null, new { @class = "btn btn-danger" })<br />
+        <!--<button class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>-----</b></button><br />-->
+        <button onclick="EndTime($(this).attr('value'), '@Html.DisplayFor(model=>model.JobID)', 'pause')" id="pauseTime" class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Pause Job</b></button>
+        <button onclick="EndTime($(this).attr('value'), '@Html.DisplayFor(model=>model.JobID)', 'complete')" id="endTime" value="" class="btn btn-danger" style="margin:15px;width:120px;height:80px;"><b>Job Complete</b></button>
+
+        <div class="col-xs-12">
+            <h3>Description: @Html.DisplayFor(model => model.jobslist.Name)</h3>
+        </div>*@
+
+
+@section scripts{
+
+    <script>
+        url:
+            function StartTime(JobId) { //start time for job is pressed
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("PostStartTime")',
+                    data: { id: JobId },
+                    success: function (data) {
+                        GetTimeSheetId(data);
+                        GetTime();
+                        $('#endTime, #pauseTime').attr("disabled", false);
+                        $('#startTime').attr("disabled", true);
+                    },
+                    error: function () {
+
+                    }
+                })
+            }
+            function GetTimeSheetId(timesheetId) {  //gets time sheet for when user presses pause or stop
+                $('#endTime').val(timesheetId);
+                $('#pauseTime').val(timesheetId);
+            }
+
+            function GetTime() {    //displys start time
+                var currentTime = new Date(),
+                currentTime = currentTime.getHours() + ':' + currentTime.getMinutes();
+                $('#timeStart').html("Start Time : " + currentTime);
+                $('#timeStart').show();
+            }
+
+            function EndTime(timesheetId, JobId, jobStatus) {     //check if all jobs are done on the booking
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EndStartTime")',
+                data: { id: timesheetId, jobId: JobId, status: jobStatus },
+                success: function () {
+                    $('#endTime, #pauseTime').attr("disabled", true);
+                    $('#startTime').attr("disabled", false);
+                    if (jobStatus == "complete") {
+                        userComment(JobId);
+                    }
+                    else {
+                        $('#timeStart').html("Job Paused");
+                    }
+                },
+                error: function () {
+
+                }
+            })
+        }
+
+        function userComment(JobId) {  //view for partial view for mechanic to leave comment
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("CommentPage")',
+                data: { id: JobId },
+                success: function (data) {
+                    $('#buttons').hide();
+                    $('#mechanicComment').html(data);
+                    $('#mechanicComment').fadeIn();
+                },
+                error: function () {
+
+                }
+            })
+        }
+
+        function Commentsbtn(jobId, incomingComment) {  //when comment is confirmed
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("LeaveComment")',
+                data: { id: jobId, comment: incomingComment },
+                success: function () {
+                    BackToHome();
+                },
+                error: function () {
+
+                }
+            })
+
+        }
+
+        function BackToHome() { //reurns to home page
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Index")'
+            })
+        }
+
+    </script>
+}

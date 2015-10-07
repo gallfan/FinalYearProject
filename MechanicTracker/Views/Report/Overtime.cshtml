@@ -1,0 +1,104 @@
+﻿@using System.Web.Script.Serialization
+@model IEnumerable<dynamic>
+@{
+    ViewBag.Title = "Over Time Ratio";
+}
+
+<div class="row" style="margin-top: 50px;margin-left: 20px;">
+    <h3>Over Time Ratio <small style="margin-left: 10px;">(Total : @ViewBag.OverTimeJobs)</small></h3>
+    <hr />
+    <div id="Rankings" style="height: 500px;"></div>
+</div>
+
+@section scripts{
+    <script>
+        $(function(){
+            var objects = new Array();
+            @{
+                @:objects = @Html.Raw(new JavaScriptSerializer().Serialize(Model));
+            }
+            var data = new Array();
+            for(var i =0; i<objects.length; i++)
+            {
+                data.push([objects[i].Name, objects[i].Count]);
+            }
+
+            $("#Rankings").highcharts({
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 60,
+                        beta: 0,
+                    },
+                    margin: [-80, -80, -80, -80],
+                },
+                title: {
+                    text: "",
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size: 14px"><b>{point.key}</b></span><br/>',
+                    pointFormat: 'Over Time Jobs: <b>{point.y}</b><br/>Percentage: <b>{point.percentage:.1f}%</b>',
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        point: {
+                            events: {
+                                legendItemClick: function () {
+                                    return false;
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}',
+                            borderRadius: 10,
+                            connectorWidth: 1,
+                            distance: 5,
+                            style: {
+                                fontWeight: 'bold',
+                                fontsize: "12px",
+                                color: "#ffffff"
+                            }
+                        },
+                        center: ["50%", "50%"],
+                        cursor: 'pointer',
+                        depth: 30,
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            connectorWidth: 2,
+                            distance: 20,
+                            style: {
+                                fontsize: "14px",
+                                color: "#ffffff"
+                            }
+                        },
+                        showInLegend: true,
+                        shadow: true,
+                        slicedOffset: 20,
+                        states: {
+                            hover: {
+                                brightness: 0.2
+                            }
+                        },
+                        startAngle: 45,
+                    }
+                },
+                legend: 
+                {
+                    align: "left",
+                    verticalAlign: 'bottom',
+                    layout: 'vertical',
+                    itemMarginBottom: 20
+                },
+                series: [{
+                    type: 'pie',
+                    name: "Placeholder",
+                    data: data
+                }]
+            });
+        }); 
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿@model MechanicTracker.Models.LoginModel
+
+@{
+    Layout = null;
+}
+<html>
+<head>
+    @Styles.Render("~/Content/css")
+    <link rel="shortcut icon" href="~/Content/themes/base/images/MT-Logo.ico" type="image/x-icon">
+    <link rel="icon" href="~/Content/themes/base/images/MT-Logo.ico" type="image/x-icon">
+    <title>Welcome to Mechanic Tracker</title>
+</head>
+<body>
+    <section id="loginForm">
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                <div class="container" id="login" style="margin-top: 10%;">
+                    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
+                        <h1>
+                            <img src="~/Content/themes/base/images/MT-Logo.PNG" style="width: 95%; height: 60px;" /></h1>
+
+                        <form class="form-signin" role="form">
+                            @*<h2 class="form-signin-heading">Log In</h2>*@
+                            <label for="inputUser" class="sr-only">Enter User Name</label>
+                            <input type="text" id="UserName" name="UserName" class="form-control" placeholder="User Name" required autofocus>
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" id="Password" name="Password" class="form-control" placeholder="Password" required>
+                            <div class="checkbox">
+                               
+                            </div>
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Log in" />
+                        </form>
+
+                        @Html.ValidationSummary(true)
+                    </div>
+                </div>
+                <!-- /container -->
+            </div>@*
+  
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })*@
+         
+        
+    
+   
+        }
+    </section>
+
+    @*<section class="social" id="socialLoginForm">
+   
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>*@
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+</body>
+</html>

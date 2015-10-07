@@ -1,0 +1,180 @@
+﻿@using PagedList;
+@model IPagedList<MechanicTracker.booking>
+@using MechanicTracker.Models;
+
+@{
+    ViewBag.Title = "Bookings";
+}
+
+
+<div class="row" style="margin-top: 70px;">
+    <div class="col-md-7" id="bookingsList">
+        <label id="labelheader">Bookings</label>
+
+        @if (Model.Any() && Model != null)
+        {
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().car.Registration)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().car.model.ModelName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.First().car.model.ModelName)
+                    </th>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.car.Registration)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.car.model.make.MakeName, "_Capitalize")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.car.model.ModelName, "_Capitalize")
+                        </td>
+                        <td>
+                            <span class = "btn btn-danger btn-xs" onclick="details(@item.BookingID)">Booking Details</span>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <div class="pagedList" data-otf-target="bookingsList">
+                @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions()
+            {
+                UlElementClasses = new[] { "pagination", "pagination-sm" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToIndividualPages = true,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = true
+            }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "bookingsList" }))
+            </div>
+           
+        }
+        else
+        {
+            <h3>No bookings</h3>
+        }
+
+    </div>
+
+
+    <div id="details" class="col-md-4" style="margin-top: 2px;"></div>
+
+
+
+    <div id="jobs" style="margin-top: 20px;" class="col-md-5"></div>
+
+</div>
+<!-- /Row -->
+
+<!-- /Container -->
+
+<script>
+
+    function details(BookingID) {//Return details about a booking
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("details")',
+            data: { id: BookingID },
+            success: function (data) {
+                $('#details').html(data);
+                $('#details').fadeIn("slow");
+                Getjobs(BookingID);
+            },
+            error: function (data) {
+                $('#details').html('<h3>Error in retrieval</h3>');
+            }
+        });
+    }
+
+    function Getjobs(BookingID) {//return jobs for that booking
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Getjobs")',
+            data: { id: BookingID },
+            success: function (data) {
+                $('#jobs').html(data);
+                $('#jobs').fadeIn("slow");
+            },
+            error: function (data) {
+                $('#jobs').html('<h3>Error in retrieval</h3>');
+            }
+        });
+    }
+
+
+
+    function createjobsform(BookingID) {//Call the form to create jobs
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("createform")',
+            data: { id: BookingID },
+            success: function (data) {
+                $('#jobs').html(data);
+                $('#jobs').fadeIn("slow");
+            },
+            error: function (data) {
+                $('#jobs').html('<h3>Error in retrieval</h3>');
+            }
+        });
+    }
+
+
+    function selectJobs(JobsCategoryID) {//return json from controller to append items for dropdown
+        $('#jobbs').empty();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("getjobsFordropdown")',
+            data: { id: JobsCategoryID },
+            success: function (data) {
+                $.each(data, function (index, item) {
+                    $("#jobbs").append("<option value=" + item.JobsListID + ">" + item.Description + "</option>");
+                });
+            },
+            error: function (data) {
+
+
+            }
+        });
+    }
+
+
+
+
+    function Addjobs() {//Add jobs to a booking
+        $('#createJobs').submit(function () {
+            if ($(this).find('input[name="BookingID"]').val() != "") {
+                $('#createJobs').hide();
+                $('#progressform').show();//show loading loading gif
+                createJobs
+                $.ajax({
+                    url: '@Url.Action("CreateJob")',
+                    type: "POST",
+                    data: $(this).serialize(),//serialize data for model binding
+                    success: function () {
+                        setTimeout(function () { toastr.success('Success', 'Job Added to System'); }, 300);//toastr alert
+                        setTimeout(function () { details($('#createJobs :input[name="BookingID"]').val()); }, 300);
+                    }
+                });
+            }
+            return false;
+        });
+    }
+
+
+</script>
+
